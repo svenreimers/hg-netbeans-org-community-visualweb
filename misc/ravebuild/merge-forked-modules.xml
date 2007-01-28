@@ -1,0 +1,154 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!--
+The contents of this file are subject to the terms of the Common Development
+and Distribution License (the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+or http://www.netbeans.org/cddl.txt.
+
+When distributing Covered Code, include this CDDL Header Notice in each file
+and include the License file at http://www.netbeans.org/cddl.txt.
+If applicable, add the following below the CDDL Header, with the fields
+enclosed by brackets [] replaced by your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+The Original Software is NetBeans. The Initial Developer of the Original
+Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
+Microsystems, Inc. All Rights Reserved.
+-->
+
+
+<project name="merge-forked-modules" default="merge" basedir=".">
+<!-- Should be set -->
+  <property name="rave_all" value="${basedir}/.."/>
+  <property name="nb.src.dir" value="${rave_all}/ravebuild/netbeans-src"/>
+
+  <basename property="modulename" file="${basedir}"/>
+  <property name="timestamp-dir" value="${nb.src.dir}/merge_timestamps"/>
+  <property name="originals-dir" value="${rave_all}/ravebuild/merge_originals/${modulename}"/>
+  <property name="timestamp-file" value="module.${modulename}.ts"/>
+  <property name="touchstamp-file" value="module.${modulename}.touch"/>
+
+  <target name="init">
+    <echo message="Start merge of ${modulename}"/>
+
+    <mkdir dir="${timestamp-dir}"/>
+    <mkdir dir="${originals-dir}"/>
+
+    <available property="touchfile.exists" file="${timestamp-dir}/${touchstamp-file}"/>
+  </target>
+
+  <target name="touch-files" depends="init" unless="touchfile.exists">
+    <!-- The touch is needed to keep the no.restore checks working  -->
+    <touch>
+      <fileset dir="${basedir}" includes="**/*" defaultexcludes="yes"/>
+    </touch>
+    <touch file="${timestamp-dir}/${touchstamp-file}"/>
+  </target>
+
+  <target name="check-timestamps" depends="touch-files">
+    <uptodate property="merge.uptodate" targetfile="${timestamp-dir}/${timestamp-file}">
+      <srcfiles dir="." includes="**/*" defaultexcludes="yes"/>
+    </uptodate>
+    <condition property="no.restore.one">
+      <uptodate> 
+        <srcfiles dir="${originals-dir}" includes="**/*"
+          excludes="_nbproject/**/*" defaultexcludes="yes"/>
+        <mapper type="glob" from="*" to="${basedir}/*"/>
+      </uptodate>
+    </condition>
+    <condition property="no.restore.two">
+      <uptodate>
+        <srcfiles dir="${originals-dir}" includes="_nbproject/**/*"
+          defaultexcludes="yes"/>
+        <mapper type="glob" from="_nbproject/*" to="${basedir}/nbproject/*"/>
+      </uptodate>
+    </condition>
+    <condition property="no.restore">
+      <and>
+        <isset property="no.restore.one"/>
+        <isset property="no.restore.two"/>
+      </and>
+    </condition>
+<!--
+    <echo message="mw merge.uptodate= ${merge.uptodate}"/>
+    <echo message="mw no.restore.one= ${no.restore.one}"/>
+    <echo message="mw no.restore.two= ${no.restore.two}"/>
+    <echo message="mw no.restore= ${no.restore}"/>
+-->
+  </target>
+
+  <target name="restore-files" depends="check-timestamps" unless="no.restore">
+    <move todir="${nb.src.dir}/${modulename}" overwrite="true">
+      <fileset dir="${originals-dir}" includes="**/*"
+          excludes="_nbproject/**/*" defaultexcludes="yes">
+        <not>
+          <present targetdir="${basedir}"/>
+        </not>
+      </fileset>
+    </move>
+    <move todir="${nb.src.dir}/${modulename}" overwrite="true">
+      <fileset dir="${originals-dir}" includes="_nbproject/**/*"
+          defaultexcludes="yes">
+        <not>
+          <present targetdir="${basedir}">
+            <mapper type="glob" from="_nbproject/*" to="nbproject/*"/>
+          </present>
+        </not>
+      </fileset>
+      <mapper type="glob" from="_nbproject/*" to="nbproject/*"/>
+    </move>
+    <touch file="${timestamp-dir}/${timestamp-file}"/>
+  </target>
+
+  <target name="remove-files" depends="check-timestamps,restore-files"
+      unless="merge.uptodate">
+    <move todir="${originals-dir}" overwrite="false">
+      <fileset dir="${nb.src.dir}/${modulename}" includes="**/*"
+          excludes="nbproject/**/*" defaultexcludes="yes">
+        <and>
+          <present targetdir="${basedir}"/>
+          <different targetdir="${basedir}"/>
+          <not>
+            <present targetdir="${originals-dir}"/>
+          </not>
+        </and>
+      </fileset>
+    </move>
+    <move todir="${originals-dir}" overwrite="false">
+      <fileset dir="${nb.src.dir}/${modulename}" includes="nbproject/**/*"
+          defaultexcludes="yes">
+        <and>
+          <present targetdir="${basedir}"/>
+          <different targetdir="${basedir}"/>
+          <not>
+            <present targetdir="${originals-dir}">
+              <mapper type="glob" from="nbproject/*" to="_nbproject/*"/>
+            </present>
+          </not>
+        </and>
+      </fileset>
+      <mapper type="glob" from="nbproject/*" to="_nbproject/*"/>
+    </move>
+    <delete includeEmptyDirs="yes">
+      <fileset dir="${nb.src.dir}/${modulename}" includes="**/*" defaultexcludes="yes">
+        <and>
+          <present targetdir="${basedir}"/>
+          <different targetdir="${basedir}"/>
+        </and>
+      </fileset>
+    </delete>
+  </target>
+
+  <target name="merge" depends="check-timestamps,remove-files" unless="merge.uptodate">
+    <copy todir="${nb.src.dir}/${modulename}">
+      <fileset dir="${basedir}" includes="**/*" defaultexcludes="yes">
+        <size value="0" when="more"/>
+      </fileset>
+    </copy>
+    <touch file="${timestamp-dir}/${timestamp-file}"/>
+
+    <echo message="Finished merge of ${modulename}"/>
+  </target>
+</project>

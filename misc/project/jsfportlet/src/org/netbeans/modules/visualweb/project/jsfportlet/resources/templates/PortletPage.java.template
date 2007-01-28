@@ -1,0 +1,51 @@
+/*
+ * __NAME__.java
+ *
+ * Created on __DATE__, __TIME__
+ * Copyright __USER__
+ */
+package untitled;
+
+import com.sun.rave.web.ui.appbase.AbstractPageBean;
+import javax.faces.FacesException;
+import com.sun.rave.web.ui.component.Form;
+import com.sun.rave.web.ui.component.ThemeLinks;
+
+
+public class __NAME__ extends AbstractPageBean {
+    // <editor-fold defaultstate="collapsed" desc="Creator-managed Component Definition">
+
+    private int __placeholder;
+
+    private ThemeLinks themeLinks1 = new ThemeLinks();
+
+    public ThemeLinks getThemeLinks1() {
+        return themeLinks1;
+    }
+
+    public void setThemeLinks1(ThemeLinks t) {
+        this.themeLinks1 = t;
+    }
+
+    private Form form1 = new Form();
+
+    public Form getForm1() {
+        return form1;
+    }
+
+    public void setForm1(Form f) {
+        this.form1 = f;
+    }
+
+    // </editor-fold>
+    public __NAME__() {
+        // <editor-fold defaultstate="collapsed" desc="Creator-managed Component Initialization">
+        try {
+        } catch (Exception e) {
+            log("Page1 Initialization Failure", e);
+            throw e instanceof javax.faces.FacesException ? (FacesException) e: new FacesException(e);
+        }
+        // </editor-fold>
+        // TODO: Add your own initialization code here (optional)
+    }
+}

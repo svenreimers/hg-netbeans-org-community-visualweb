@@ -1,0 +1,88 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<!--
+The contents of this file are subject to the terms of the Common Development
+and Distribution License (the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+or http://www.netbeans.org/cddl.txt.
+
+When distributing Covered Code, include this CDDL Header Notice in each file
+and include the License file at http://www.netbeans.org/cddl.txt.
+If applicable, add the following below the CDDL Header, with the fields
+enclosed by brackets [] replaced by your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+The Original Software is NetBeans. The Initial Developer of the Original
+Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
+Microsystems, Inc. All Rights Reserved.
+-->
+
+<project name="default-rave-properties" default="none" basedir=".">
+
+  <dirname property="rave_all" file="${ant.file.default-rave-properties}/.."/>
+  
+  <property name="netbeans.dest.dir" location="${rave_all}/ravebuild/rave"/>
+  <property name="netbeans.location" location="${rave_all}/ravebuild/netbeans"/>
+  
+  <!-- setting dest and prefix for zip file -->
+  <property name="rave.zip.dest" location="${rave_all}/ravebuild"/>
+  <property name="rave.zip.prefix" value="creator"/>
+  <property name="cache.dir" location="${rave_all}/ravebuild"/>
+ 
+  <property name="jdkhome" value="${netbeans.dest.dir}/java"/>
+  
+  <!-- properties related to netbeans -->
+  <property name="nb.cache.dir" location="${cache.dir}"/>
+  <property name="en.nb.name.part1" value="netbeans-5_5-special"/>
+  <property name="en.nb.name.part2" value="200701190000"/>
+  <property name="en.nb.name.part3" value="19_Jan_2007_0000"/>
+  <property name="ml.nb.name.part1" value="netbeans-5_5-daily"/>
+  <property name="ml.nb.name.part2" value="200611140100"/>
+  <property name="ml.nb.name.part3" value="14_Nov_2006_0100"/> 
+  <property name="ml.nb.name.suffix" value="ml_ja_zh_CN_pt_BR"/>
+
+  <property name="nb.src.zip" value="${en.nb.name.part1}-src-${en.nb.name.part2}-ide_sources-${en.nb.name.part3}.zip"/>
+  <property name="nb.bin.zip" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-ide-${en.nb.name.part3}.zip"/>
+
+  <property name="nb.linux" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-linux-${en.nb.name.part3}.bin"/>
+  <property name="nb.mac" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-macosx-${en.nb.name.part3}.tar.gz"/>
+  <property name="nb.solsparc" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-solaris-sparc-${en.nb.name.part3}.bin"/>
+  <property name="nb.solx86" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-solaris-x86-${en.nb.name.part3}.bin"/>
+  <property name="nb.win" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-windows-${en.nb.name.part3}.exe"/>
+
+  <property name="nb.linux.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-linux-${ml.nb.name.suffix}-${ml.nb.name.part3}.bin"/>
+  <property name="nb.mac.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-macosx-${ml.nb.name.suffix}-${ml.nb.name.part3}.tar.gz"/>
+  <property name="nb.solsparc.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-solaris-sparc-${ml.nb.name.suffix}-${ml.nb.name.part3}.bin"/>
+  <property name="nb.solx86.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-solaris-x86-${ml.nb.name.suffix}-${ml.nb.name.part3}.bin"/>
+  <property name="nb.win.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-windows-${ml.nb.name.suffix}-${ml.nb.name.part3}.exe"/>
+
+  <property name="nb.bin.base" location="${rave_all}/ravebuild"/>
+  <property name="nb.src.base" location="${rave_all}/ravebuild"/>
+  <property name="nb.src.dir" location="${nb.src.base}/netbeans-src"/>
+  <property name="nb.forked.modules.dir" location="${rave_all}"/>
+  <property name="l10n.dist.dir" location="${rave_all}/ravebuild/l10ndist"/>  
+  <property name="ravebuild.cache.server.url" value="http://balui.sfbay.sun.com/cache/CCRproto/netbeans"/>
+
+  <!-- properties related to ismp -->
+  <property name="ismp.cache.dir" location="${cache.dir}/ISMP"/>
+  <property name="ismp.name" value="is11sab.zip"/>
+  <property name="ismp.cache.server.url" value="http://clue.sfbay.sun.com/kits2/installs/ismp/XI"/>
+
+  <!-- properties related to glassfish -->
+  <property name="as.cache.dir" location="${cache.dir}/SunAppServer"/>
+  <property name="as.linux" value="glassfish-installer-linux-v1_ur1-b14.jar"/>
+  <property name="as.mac" value="glassfish-installer-mac-v1_ur1-b14.jar"/>
+  <property name="as.solsparc" value="glassfish-installer-sol-sparc-v1_ur1-b14.jar"/>
+  <property name="as.solx86" value="glassfish-installer-sol-x86-v1_ur1-b14.jar"/>
+  <property name="as.win" value="glassfish-installer-windows-v1_ur1-b14.jar"/>
+  <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v1ur1/PE/b14"/>
+
+  <property name="jdk.cache.dir" location="${cache.dir}/JDKzip"/>
+  <property name="jdk.linux" value="j2sdk-1.5.0_06-linux"/>
+  <property name="jdk.solsparc" value="j2sdk-1.5.0_06-solsparc"/>
+  <property name="jdk.solx86" value="j2sdk-1.5.0_06-solx86"/>
+  <property name="jdk.win" value="j2sdk-1.5.0_06-nt"/>
+  <property name="jdk.cache.server.url" value="http://balui.sfbay.sun.com/cache/j2se/1.5.0_06"/>
+
+</project>

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The contents of this file are subject to the terms of the Common Development
+and Distribution License (the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+or http://www.netbeans.org/cddl.txt.
+
+When distributing Covered Code, include this CDDL Header Notice in each file
+and include the License file at http://www.netbeans.org/cddl.txt.
+If applicable, add the following below the CDDL Header, with the fields
+enclosed by brackets [] replaced by your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+The Original Software is NetBeans. The Initial Developer of the Original
+Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
+Microsystems, Inc. All Rights Reserved.
+-->
+
+<project>
+    <folder name="nbproject">
+        <file name="j2ee13-web-xml.xsl" template="Templates/JsfApps/j2ee13-web-xml.xsl"/>
+        <file name="export-web-xml.xsl" template="Templates/JsfApps/export-web-xml.xsl"/>
+    </folder>    
+    <folder name="src">
+        <folder name="${jsf.pagebean.package}">
+            <file name="ApplicationBean1.java" template="Templates/JsfBeans/ApplicationBean.java"/>
+            <file name="SessionBean1.java" template="Templates/JsfBeans/SessionBean.java"/>
+            <file name="RequestBean1.java" template="Templates/JsfBeans/RequestBean.java"/>
+            <file name="Bundle.properties" template="Templates/Classes/properties.properties"/>
+        </folder>
+    </folder>
+    <folder name="web">
+        <file name="PortletPage1.jsp" template="Templates/JsfPortlet/PortletPage.jsp"/>
+<!-- I'm guessing portlets shouldn't have their own stylesheets.... correct?
+        <folder name="resources">
+            <file name="stylesheet.css" template="Templates/JsfOther/stylesheet.css"/>
+        </folder>
+-->
+        <folder name="WEB-INF">
+            <file name="web.xml" template="Templates/JsfAdvanced/web.xml"/>
+            <file name="portlet.xml" template="Templates/JsfPortlet/portlet.xml"/>
+            <file name="navigation.xml" template="Templates/JsfAdvanced/navigation.xml"/>
+            <file name="managed-beans.xml" template="Templates/JsfAdvanced/managed-beans.xml"/>
+            <file name="faces-config.xml" template="Templates/JsfAdvanced/faces-config.xml"/>
+            <folder name="classes"/>
+            <folder name="lib"/>
+            <folder name="tld">
+                <file name="portlet.tld" template="Templates/JsfPortlet/portlet.tld"/>
+            </folder>
+        </folder>
+    </folder>
+</project>

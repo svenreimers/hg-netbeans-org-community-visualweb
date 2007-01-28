@@ -1,0 +1,1196 @@
+<?xml version='1.0' encoding='ISO-8859-1' ?>
+<!--
+The contents of this file are subject to the terms of the Common Development
+and Distribution License (the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+or http://www.netbeans.org/cddl.txt.
+
+When distributing Covered Code, include this CDDL Header Notice in each file
+and include the License file at http://www.netbeans.org/cddl.txt.
+If applicable, add the following below the CDDL Header, with the fields
+enclosed by brackets [] replaced by your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+The Original Software is NetBeans. The Initial Developer of the Original
+Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
+Microsystems, Inc. All Rights Reserved.
+=======
+Visual Web top level build script.
+-->
+<project name="ravebuild" default="build" basedir=".">
+
+    <!-- XXX Also like in nbbuild, allow to specify user properties in ravebuild-->
+    <!-- First things first: read the user's and/or -->
+    <!-- the site's build properties files.         -->
+    <property file="${basedir}/user.build.properties"/>
+    <property file="${basedir}/build.properties"/>
+    <import file="${basedir}/default-rave-properties.xml"/>    
+
+    <property name="build.compiler.debug" value="true"/>
+    <property name="build.compiler.deprecation" value="true"/>
+    <!-- Jar options -->
+    <property name="build.package.compress" value="false"/>
+    <property name="build.package.index" value="true"/>
+
+    <!-- Overriding test.user.dir -->
+    <property name="test.user.dir" location="${basedir}/testuserdir"/>
+    
+    <!-- Used for NBM builds -->
+    <property name="dist.base" value="www.sun.com/download/nbms"/>
+    <property name="homepage.base" value="sun.com"/>
+    <property name="nbm_alias" value="creator_ide"/>
+    <property name="makenbm.override.url" value="http://www.sun.com/software/products/jscreator"/>
+    <property name="nbm.is.global" value="true"/>
+    
+    <!-- Needed to be set this way, otherwise they are not initialized when init is running,
+    which caused sanity-start to fail on unix, investigate -->
+    <property name="sanitystart.args.additional" value=""/>
+    <property name="sanitystart.args" value="-J-Dnetbeans.close=true ${sanitystart.args.additional}"/>
+    
+    <target name="bootstrap">
+        <mkdir dir="${basedir}/build/antclasses"/>
+        <javac srcdir="${basedir}/antsrc" destdir="${basedir}/build/antclasses" deprecation="true" debug="${build.compiler.debug}" source="1.4">
+            <classpath path="${ant.home}/lib/ant.jar"/>
+        </javac>
+        <jar jarfile="${basedir}/raveantext.jar" basedir="${basedir}/build/antclasses">
+            <exclude name="**/*.java"/>
+            <exclude name="package-list"/>
+        </jar>
+         
+        <taskdef name="for-each" 
+         classname="org.netbeans.modules.visualweb.ravebuild.ForEach" 
+         classpath="${rave_all}/ravebuild/raveantext.jar"/>
+        <taskdef name="for-each-xsl"
+        classname="org.netbeans.modules.visualweb.ravebuild.ForEachXsl"
+        classpath="${rave_all}/ravebuild/raveantext.jar"/>
+    </target>
+    
+    <target name="-check-netbeans-build" depends="merge-forked-modules">
+      <condition property="skip.netbeans.build" value="true">
+        <and>
+          <or>
+            <isset property="no.forked.modules"/>
+            <isset property="no.new.merge"/>
+          </or>
+          <available file="${nb.src.dir}/merge_timestamps/build.ts"/>
+          <available file="${nb.src.dir}/nbbuild/netbeans/platform6/lib/boot.jar"/>
+        </and>
+      </condition>
+      <echo message="skip.netbeans.build= ${skip.netbeans.build}"/>
+
+      <property name="netbeans.location" location="${nb.src.dir}/nbbuild/netbeans"/>
+    </target>
+
+    <target name="-check-netbeans-copy" depends="-check-netbeans-build">
+      <condition property="skip.netbeans.copy" value="true">
+        <and>
+            <available file="${netbeans.dest.dir}/bin/netbeans"/>
+        </and>
+      </condition>
+      <echo message="skip.netbeans.copy= ${skip.netbeans.copy}"/>
+    </target>
+
+    <target name="prepare-netbeans-dest-dir" depends="-check-netbeans-copy, init"
+        unless="skip.netbeans.copy">
+        <mkdir dir="${netbeans.dest.dir}"/>
+        <copy overwrite="true" todir="${netbeans.dest.dir}">
+            <fileset dir="${netbeans.location}" includes="**"/>
+        </copy>
+        <chmod perm="755" file="${netbeans.dest.dir}/bin/netbeans"/>
+        <property name="cluster.location" location="${netbeans.dest.dir}/visualweb1"/>
+        <echo append="true" file="${netbeans.dest.dir}/etc/netbeans.clusters">visualweb1${line.separator}</echo>
+    </target>
+    
+    <target name="build-netbeans" depends="-check-netbeans-build,init"
+        unless="skip.netbeans.build">
+      <delete file="${nb.src.dir}/merge_timestamps/build.ts" failonerror="false"/>
+      <ant antfile="${nb.src.dir}/nbbuild/build.xml" target="build-nozip" inheritall="false"/>
+      <touch file="${nb.src.dir}/merge_timestamps/build.ts"/>
+    </target>
+    
+    <target name="build-nbm-pack" depends="init,setup-nbm-signing,load-nbm-password" description="Builds all creator modules into nbms">
+        <delete dir="nbms"/>
+        <mkdir dir="nbms" />
+        <loadproperties srcFile="../visualwebsuite/nbproject/project.properties">
+           <filterchain>
+                 <tokenfilter>
+                   <!--deletecharacters chars=".."/-->
+                   <replacestring from=".." to=""/>
+                 </tokenfilter>
+             </filterchain>      
+        </loadproperties>
+       <!-- <echo message="Modules = ${modules}"/>-->
+       <for-each startdir=".." target="nbm" locations="${modules}">
+            <property name="nbm.target.dir" value="${basedir}/nbms"/>
+            <property name="license.file" location="${rave_all}/ravebuild/visualweb-nbm-license.txt"/>
+            <property name="nbm.is.global" value="true"/>
+            <property name="homepage.base" value="sun.com"/>
+            <property name="makenbm.override.url" value="http://www.netbeans.org/products/visualweb/index.html"/> 
+            <property name="keystore" value="${keystore}"/>
+            <property name="storepass" value="${storepass}"/>
+            <property name="nbm_alias" value="visualweb_ide"/>
+       </for-each>
+    </target>
+    <target name="nbm"/><!-- dummy target -->
+    
+    <target name="fix-all-licenses" depends="init">
+        <loadproperties srcFile="../visualwebsuite/nbproject/project.properties">
+           <filterchain>
+                 <tokenfilter>
+                   <!--deletecharacters chars=".."/-->
+                   <replacestring from=".." to=""/>
+                 </tokenfilter>
+             </filterchain>      
+        </loadproperties>
+        <for-each-xsl startdir=".." locations="${modules}"/>
+        <for-each startdir=".." target="fix-license" locations="${modules}" inheritall="false"/>
+        <!--
+        <for-each-xsl startdir=".." locations="xhtml"/>
+        <for-each startdir=".." target="fix-license" locations="xhtml" inheritall="false"/>
+        -->
+    </target>
+    
+    <target name="fix-all-library-licenses" depends="init">
+         <loadproperties srcFile="../visualwebsuite/nbproject/project.properties">
+           <filterchain>
+                 <tokenfilter>
+                   <!--deletecharacters chars=".."/-->
+                   <replacestring from=".." to=""/>
+                 </tokenfilter>
+             </filterchain>      
+        </loadproperties>
+        <for-each-xsl startdir=".." locations="${modules}" suffix="library"/>
+        <for-each startdir=".." target="fix-license" locations="${modules}" suffix="library" inheritall="false" skipnonexistentdir="true">
+            <property name="suite.dir" location="${basedir}/../visualwebsuite"/>
+        </for-each>
+    </target>
+    
+    <target name="-check-forked-modules">
+        <condition property="no.forked.modules">
+            <equals trim="true" arg1="${netbeans.forked.modules}" arg2=""/>
+        </condition>
+    </target>
+    
+    <target name="merge-forked-modules" depends="-check-forked-modules,init"
+        unless="no.forked.modules">
+      <mkdir dir="${nb.src.dir}/merge_timestamps"/>
+      <subant target="merge" genericantfile="${basedir}/merge-forked-modules.xml">
+        <property name="rave_all" value="${rave_all}"/>
+        <property name="nb.src.dir" value="${nb.src.dir}"/>
+        <dirset dir="${rave_all}" includes="${netbeans.forked.modules}"/>
+      </subant>
+      <uptodate property="no.new.merge">
+        <srcfiles dir="${nb.src.dir}/merge_timestamps" includes="module.*.ts"/>
+        <mapper type="merge" to="${nb.src.dir}/nbbuild/netbeans/moduleCluster.properties"/>
+      </uptodate>
+    </target>
+
+    <target name="unzip-netbeans-bin" depends="init" unless="netbeans.bin.unzipped">
+        <mkdir dir="${basedir}/build"/>
+        <unzip overwrite="true" src="${cache.dir}/${nb.bin.zip}" dest="${basedir}"/>
+        <property name="netbeans.location" location="${basedir}/netbeans"/>
+        <property name="netbeans.bin.unzipped" value="true"/>
+    </target>
+    
+    <!-- Overriding all target.
+    Reason: removing commit-validation, adding sanity-start -->
+    <!-- Removed sanity-start for now to avoid all the ide exceptions in the visualweb module -->
+    <target name="all" depends="build-zip" description="Build the IDE, run basic validation tests, start the IDE, and create the zip"/>
+    
+    <!-- All target without zipping the IDE -->
+    <!-- Removed sanity-start for now to avoid all the ide exceptions in the visualweb module -->
+    <target name="all-nozip" depends="build" description="Build the IDE, run basic validation tests, and start the IDE"/>
+    
+    <target name="build" depends="prepare-netbeans-dest-dir, copy-jdk" description="Build the IDE, run basic validation tests, and start the IDE">
+        <ant antfile="../visualwebsuite/build.xml" target="build" inheritall="false"/>
+        <echo file="${basedir}/rave/visualweb1/build-number">${buildnumber}</echo>
+        <!-- ant antfile="../idesuite/build.xml" target="build" inheritall="false"/ -->
+        <!-- echo file="${basedir}/rave/raveide2.0/build-number">${buildnumber}</echo -->
+    </target>
+
+    <!--
+    <target name="rebuild-netbeans" description="(Re)builds Netbeans from the source distribution">
+        <antcall target="prepare-netbeans-dest-dir" inheritall="true">
+            <param name="force.netbeans.rebuild" value="true"/>
+        </antcall>
+    </target>
+    -->
+    
+    <target name="-suite-clean">
+        <available file="${basedir}/rave/harness/suite.xml" property="harness.available"/>
+    </target>
+    
+    <target name="suite-clean" depends="init, -suite-clean" description="Cleans the module suite only" if="harness.available">
+        <!-- ant antfile="../idesuite/build.xml" target="clean" inheritall="false"/ -->
+        <ant antfile="../visualwebsuite/build.xml" target="clean" inheritall="false"/>
+    </target>
+    
+    <target name="ravebuild-clean">
+        <delete dir="build"/>
+        <delete file="raveantext.jar" failonerror="false" deleteonexit="true"/>
+    </target>
+    
+    <target name="nb-platform-clean">
+        <ant antfile="netbeans-src/nbbuild/build.xml" target="clean" inheritall="false"/>
+      <delete file="${nb.src.dir}/merge_timestamps/build.ts"/>
+    </target>
+    
+    <target name="test-clean">
+    <!-- XXX Fix this later
+        <ant antfile="../test/build.xml" target="clean" inheritall="false"/>
+    -->
+    </target>
+
+    <target name="clean" depends="init, suite-clean, ravebuild-clean, test-clean" description="Cleans build products">
+        <delete dir="rave" deleteonexit="true"/>
+    </target>
+    
+    <!-- Overriding set-buildnumber target.
+    Reason: Different format (property would be better) -->
+    <target name="set-buildnumber" unless="buildnumber">
+        <tstamp>
+            <format property="buildnumber" pattern="yyMMdd-HHmm"/>
+        </tstamp> 
+    </target>
+
+    <target name="-validate-cache">
+        <condition property="netbeans.bin.available">
+            <or>
+                <available file="${netbeans.location}/bin/netbeans"/>
+                <isset property="bypass.cache.validation"/>
+            </or>
+        </condition>
+        
+        <fail unless="netbeans.bin.available">
+            Netbeans binary under ${netbeans.location} could not be found.  A cache update may be needed.
+        </fail>
+
+        <condition property="jdk.available">
+            <or>
+                <available file="${basedir}/ship-java/COPYRIGHT"/>
+                <os family="mac"/>
+                <isset property="bypass.cache.validation"/>
+            </or>
+        </condition>
+        
+        <fail unless="jdk.available">
+            The bundled version of the JVM under ${basedir}/ship-java could not be found.  A cache update may be needed.
+        </fail>
+    </target>
+    
+    <!-- Overriding init target.
+    Reason: Adding setup-nbm-signing targets
+    and setup of buildnum and nbm.target.dir properties -->
+    <target name="init" depends="-validate-cache, set-buildnumber, bootstrap">
+        <property name="buildnum" value="ide-${buildnumber}"/>
+        <property name="sanitystart.args" value="-J-Dnetbeans.close=true ${sanitystart.args.additional}"/>
+        <!-- Adding new value -->
+        <property name="nbm.target.dir" location="nbms" />
+        <condition property="isMacOSX">
+            <os family="mac"/>
+        </condition>
+    </target>
+
+    <!-- Overriging sanity-start target.
+    Reason: To match the ravebuild/rave dir (not able to parametrize) -->
+    <target name="sanity-start" depends="init,maybe-build-nozip">
+        <mkdir dir="${test.user.dir}"/>
+        <echo>Starting the IDE as a sanity check...</echo>
+        <!-- XXX better would be to scan start log for stacktraces and just show those; -->
+        <!-- possibly after filtering for duplicates or something like this. -->
+        <!-- Timeout is ten minutes; should be enough for valid start, while preventing -->
+        <!-- a deadlock from hanging an automated build: -->
+        <exec os="Windows NT Windows 95 Windows 98 Windows 2000 Windows XP" executable="${netbeans.dest.dir}/bin/netbeans.exe" failonerror="yes" timeout="600000">
+            <arg value="-jdkhome"/>
+            <arg file="${jdkhome}"/>
+            <arg value="-userdir"/>
+            <arg file="${test.user.dir}"/>
+            <arg line="${sanitystart.args}"/>
+        </exec>
+        <exec os="Linux SunOS Solaris" dir="." executable="sh" failonerror="yes" timeout="600000">
+            <arg value="${netbeans.dest.dir}/bin/netbeans"/>
+            <arg value="-jdkhome"/>
+            <arg file="${jdkhome}"/>
+            <arg value="-userdir"/>
+            <arg file="${test.user.dir}"/>
+            <arg line="${sanitystart.args}"/>
+        </exec>
+	<exec os="Mac OS X" dir="." executable="sh" failonerror="yes" timeout="600000">
+            <arg value="${netbeans.dest.dir}/bin/netbeans"/>
+            <arg value="-userdir"/>
+            <arg file="${test.user.dir}"/>
+            <arg line="${sanitystart.args}"/>
+        </exec>
+        <echo>Finished starting the IDE, pay attention to any reported errors.</echo>
+    </target>
+    
+    <!-- Overriding build target.
+    Reason: to be able customize the destination and prefix (not able now). -->
+    <target name="build-zip" depends="build-nozip,copy-jdk"
+            description="Create a complete build including a ZIP distribution (but do not try it).">
+        <!-- zip task not well suited to making final build, as it does not set +x bits -->
+        <!-- so on Unix try to use native ZIP first -->
+        <delete file="${rave.zip.dest}/RAVE-${buildnum}.zip"/>
+
+        <!-- package the zip file -->
+        <zip destfile="${rave.zip.dest}/RAVE-${buildnum}.zip" update="true" duplicate="preserve">
+            <zipfileset file="${netbeans.dest.dir}/bin/creator" filemode="755" prefix="${rave.zip.prefix}/bin"/>
+            <zipfileset file="${netbeans.dest.dir}/platform6/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform6/lib"/>
+            <zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
+                <include name="*.sh"/>
+            </zipfileset>
+            <zipfileset dir="${netbeans.dest.dir}" prefix="${rave.zip.prefix}">
+                <exclude name="*.built" />
+            </zipfileset>
+        </zip>
+        <echo>Build created; see RAVE-${buildnum}.zip (in ravebuild/).
+If you like, you may run the IDE straight from
+the ${netbeans.dest.dir}/bin/ directory.
+(For example, type: ant tryme)
+        </echo>
+    </target>
+    
+    
+    <!-- Overriding build-nbms target.
+    Reason: adding deletion of nbms dir -->
+    <target name="build-nbms" depends="init">
+        <delete dir="nbms"/>
+<!--        <ant antfile="${nb.src.dir}/nbbuild/build.xml" target="build-nbms" inheritall="false"/> -->
+        <!-- Does not work <antcall target="nbbuild.build-nbms"/> -->
+    </target>
+
+    <!-- Overriding l10n-kit target.
+    Reason: Using diff module list. -->
+   
+    <delete dir="l10n-tmp"/>
+    <target name="grab" depends="init"
+            description="Grabs localizable files into l10n-tmp">
+	<taskdef name="grabLocalizableFiles" classname="com.sun.rave.ravebuild.GetLocalizableFiles" classpath="${basedir}/raveantext.jar"/>
+	<grabLocalizableFiles listfile="l10n.list" basedir=".." targetdir="l10n-tmp" modulelist="true"/>
+  </target>
+
+    <target name="l10n-kit" depends="init,grab">
+        <taskdef name="l10n" classname="com.sun.rave.ravebuild.L10nTask"
+                classpath="${basedir}/raveantext.jar"/>
+        <delete dir="${l10n.dist.dir}"/>
+        <mkdir dir="${l10n.dist.dir}"/>
+        <delete dir="tmp"/>
+        <mkdir dir="tmp"/>
+        <property name="nbroot" location=".."/>
+        <!-- Make sure you call with the right configuration here to get modules populated correctly -->
+        <property name="l10n-modules" value="installer,${allmodules}"/> 
+        <l10n topdirs="${nbroot}" modules="${l10n-modules}"
+            localizablefile="l10n.list" generatedfile="l10n.list.translated"
+            distdir="${l10n.dist.dir}" changedfile="l10n.list.changed"
+            builddir="tmp" buildnumber="${buildnumber}"
+            excludepattern="**/ja/,**/*_ja.*"/>
+        <delete dir="tmp"/>
+    </target>
+
+    <!-- FIXME Overriding check-for-build target.
+    Reason: To reflect changed target location. -->    
+    <target name="check-for-build">
+        <available property="have-build" file="${netbeans.dest.dir}/bin/netbeans"/>
+    </target>
+    <!-- Overriding maybe-build-nozip target.
+    Reason: To launch with correct basedir and target context. -->
+    <target name="maybe-build-nozip" depends="check-for-build" unless="have-build">
+        <ant dir="${basedir}" target="build-nozip"/>
+    </target>
+        
+
+    <!-- Overriding build-nozip target.
+    Reason: Overriding cluster.properties file, removing netbeans.conf, using creator.conf
+    and adding creator launchers -->
+    <target name="build-nozip" depends="build">
+    </target>
+
+    <!-- target used by Rave build -->
+    <!-- Zip up the NBMs for release -->
+    <target name="zip-nbms" depends="init">
+        <!-- Zip up all the other nbms and store in dist.dir -->
+
+	<!-- This is the old way to creating NBM zip. -->
+	<!-- But this does not create NBM zip on Windows -->
+        <!-- <exec os="Solaris SunOS Linux Mac OS X" executable="zip" dir="${nbm.target.dir}" failonerror="false">
+            <arg line="-9"/>
+            <arg line="-r"/>
+            <arg line="RAVE-${buildnum}-nbms.zip"/>
+            <arg line="."/>
+            <arg line="-i"/>
+            <arg line="*"/>
+        </exec>
+        <move file="${nbm.target.dir}/RAVE-${buildnum}-nbms.zip"
+        tofile="${basedir}/RAVE-${buildnum}-nbms-test.zip"/> -->
+
+	<!-- Using ANT zip to create NBM zips on all platforms -->
+	<zip destfile="${basedir}/RAVE-${buildnum}-nbms.zip">
+    	    <zipfileset dir="${nbm.target.dir}" includes="*.nbm"/>
+  	</zip>	
+        <!-- Cleanup the temporary directory. -->
+    </target>
+
+    <!-- This will read the NBM signing values from the cache if possible. -->
+    <target name="setup-nbm-signing"
+            depends="start-setup-nbm-signing,load-nbm-password,dont-sign-nbms"/>
+
+    <!-- Set properties for the NBM signing cache, and see if it's there. -->
+    <target name="start-setup-nbm-signing">
+        <property name="re-nbm-key-cache" location="${basedir}/build_env"/>
+        <property name="keystore" location="${re-nbm-key-cache}/ide.ks"/>
+        <property name="re-nbm-passfile" location="${re-nbm-key-cache}/.pswd"/>
+        <available file="${keystore}" property="re-nbm-keystore-available"/>
+    </target>
+
+    <!-- Read the file that will set re-nbm-storepass to the password. -->
+    <target name="load-nbm-password" if="re-nbm-keystore-available">
+        <property file="${re-nbm-passfile}"/>
+        <property name="storepass" value="${re-nbm-storepass}"/>
+    </target>
+
+    <!-- If we can't sign the NBM's, set alternate property values. -->
+    <target name="dont-sign-nbms" unless="re-nbm-keystore-available">
+        <property name="keystore" value="junk"/>
+        <property name="storepass" value="?"/>
+    </target>
+  
+    <target name="copy-env1" depends="init">
+        <available property="env-copied" file="${jdkhome}/COPYRIGHT"/>
+        <condition property="noJdkCopy">
+            <or>
+                <isset property="isMacOSX"/>
+                <isset property="env-copied"/>
+            </or>
+        </condition>
+	<available property="shipJdkHome" 
+		   value="${basedir}/ship-java"
+		   file="${basedir}/ship-java/COPYRIGHT"/>
+	<condition property="shipJdkHome" value="${jdkhome}">
+	    <not>
+       		<isset property="shipJdkHome"/>
+	    </not>
+	</condition>
+    </target>
+
+    <target name="copy-jdk" depends="copy-env1" unless="noJdkCopy">
+        <copy toDir="${jdkhome}">
+            <fileset dir="${shipJdkHome}">
+                <include name="COPYRIGHT"/>
+                <include name="LICENSE"/>
+                <include name="README"/>
+                <include name="src.zip"/>
+                <include name="README.html"/>
+                <include name="bin/**"/>
+                <include name="include/**"/>
+                <include name="jre/**"/>
+                <include name="lib/**"/>
+                <include name="man/**"/>
+            </fileset>
+        </copy>
+        <chmod perm="ugo+x">
+            <fileset dir="${jdkhome}">
+                <include name="**/bin/*"/>
+            </fileset>
+        </chmod>
+    </target>
+
+    <!-- Helper targets for building individual modules, this replaces the individual scripts -->
+    <!-- Add individual wrapper targets you need -->
+    <property name="target" value="netbeans"/>
+
+    <!-- Rave modules -->
+    <target name="appbase">
+        <ant dir="../appbase" target="${target}"/>
+    </target>
+    <target name="audit">
+        <ant dir="../audit" target="${target}"/>
+    </target>
+    <target name="branding/autoupdate">
+        <ant dir="../branding/autoupdate" target="${target}"/>
+    </target>
+    <target name="branding/beans">
+        <ant dir="../branding/beans" target="${target}"/>
+    </target>
+    <target name="branding/core">
+        <ant dir="../branding/core" target="${target}"/>
+    </target>
+    <target name="branding/core/windows">
+        <ant dir="../branding/core/windows" target="${target}"/>
+    </target>
+    <target name="branding/editor">
+        <ant dir="../branding/editor" target="${target}"/>
+    </target>
+    <target name="branding/extbrowser">
+        <ant dir="../branding/extbrowser" target="${target}"/>
+    </target>
+    <target name="branding/java">
+        <ant dir="../branding/java" target="${target}"/>
+    </target>
+    <target name="branding/image">
+        <ant dir="../branding/image" target="${target}"/>
+    </target>
+    <target name="branding/html">
+        <ant dir="../branding/html" target="${target}"/>
+    </target>
+    <target name="branding/objectbrowser/navigator">
+        <ant dir="../branding/objectbrowser/navigator" target="${target}"/>
+    </target>
+    <target name="branding/openide">
+        <ant dir="../branding/openide" target="${target}"/>
+    </target>
+    <target name="branding/openidex">
+        <ant dir="../branding/openidex" target="${target}"/>
+    </target>
+    <target name="branding/openide/loaders">
+        <ant dir="../branding/openide/loaders" target="${target}"/>
+    </target>
+    <target name="branding/projects/projectui">
+        <ant dir="../branding/projects/projectui" target="${target}"/>
+    </target>
+    <target name="branding/refactoring">
+        <ant dir="../branding/refactoring" target="${target}"/>
+    </target>
+    <target name="branding/tasklist/docscan">
+        <ant dir="../branding/tasklist/docscan" target="${target}"/>
+    </target>
+    <target name="branding/utilities">
+        <ant dir="../branding/utilities" target="${target}"/>
+    </target>
+    <target name="branding/vcscore">
+        <ant dir="../branding/vcscore" target="${target}"/>
+    </target>
+    <target name="branding/web/jspsyntax">
+        <ant dir="../branding/web/jspsyntax" target="${target}"/>
+    </target>
+    <target name="branding/web/project">
+        <ant dir="../branding/web/project" target="${target}"/>
+    </target>
+    <target name="branding/xml/catalog">
+        <ant dir="../branding/xml/catalog" target="${target}"/>
+    </target>
+    <target name="branding/xml/core">
+        <ant dir="../branding/xml/core" target="${target}"/>
+    </target>
+    <target name="branding/xml/css">
+        <ant dir="../branding/xml/css" target="${target}"/>
+    </target>
+    <target name="branding/xml/text-edit">
+        <ant dir="../branding/xml/text-edit" target="${target}"/>
+    </target>
+    <target name="css">
+        <ant dir="../css" target="${target}"/>
+    </target>
+    <target name="dataconnectivity">
+        <ant dir="../dataconnectivity" target="${target}"/>
+    </target>
+    <target name="designer">
+        <ant dir="../designer" target="${target}"/>
+    </target>
+    <target name="designer/api">
+        <ant dir="../designer/api" target="${target}"/>
+    </target>
+    <target name="designer/markup">
+        <ant dir="../designer/markup" target="${target}"/>
+    </target>
+    <target name="designtime">
+        <ant dir="../designtime" target="${target}"/>
+    </target>
+    <target name="ejb">
+        <ant dir="../ejb" target="${target}"/>
+    </target>
+    <target name="ejb/support">
+        <ant dir="../ejb/support" target="${target}"/>
+    </target>
+    <target name="errorhandler/client">
+        <ant dir="../errorhandler/client" target="${target}"/>
+    </target>
+    <target name="errorhandler/server">
+        <ant dir="../errorhandler/server" target="${target}"/>
+    </target>
+    <target name="extension/apisupport/ant">
+        <ant dir="../extension/apisupport/ant" target="${target}"/>
+    </target>
+    <target name="extension/autoupdate">
+        <ant dir="../extension/autoupdate" target="${target}"/>
+    </target>
+    <target name="extension/beans">
+        <ant dir="../extension/beans" target="${target}"/>
+    </target>
+    <target name="extension/core">
+        <ant dir="../extension/core" target="${target}"/>
+    </target>
+    <target name="extension/core/execution">
+        <ant dir="../extension/core/execution" target="${target}"/>
+    </target>
+    <target name="extension/core/ide">
+        <ant dir="../extension/core/ide" target="${target}"/>
+    </target>
+    <target name="extension/core/javahelp">
+        <ant dir="../extension/core/javahelp" target="${target}"/>
+    </target>
+    <target name="extension/core/multiview">
+        <ant dir="../extension/core/multiview" target="${target}"/>
+    </target>
+    <target name="extension/core/output2">
+        <ant dir="../extension/core/output2" target="${target}"/>
+    </target>
+    <target name="extension/core/ui">
+        <ant dir="../extension/core/ui" target="${target}"/>
+    </target>
+    <target name="extension/core/windows">
+        <ant dir="../extension/core/windows" target="${target}"/>
+    </target>
+    <target name="extension/debuggercore">
+        <ant dir="../extension/debuggercore" target="${target}"/>
+    </target>
+    <target name="extension/debuggerjpda/ui">
+        <ant dir="../extension/debuggerjpda/ui" target="${target}"/>
+    </target>
+    <target name="extension/editor">
+        <ant dir="../extension/editor" target="${target}"/>
+    </target>
+    <target name="extension/html">
+        <ant dir="../extension/html" target="${target}"/>
+    </target>
+    <target name="extension/ide/launcher/upgrade">
+        <ant dir="../extension/ide/launcher/upgrade" target="${target}"/>
+    </target>
+    <target name="extension/java">
+        <ant dir="../extension/java" target="${target}"/>
+    </target>
+    <target name="extension/java/editor">
+        <ant dir="../extension/java/editor" target="${target}"/>
+    </target>
+    <target name="extension/java/freeform">
+        <ant dir="../extension/java/freeform" target="${target}"/>
+    </target>
+    <target name="extension/java/j2seproject">
+        <ant dir="../extension/java/j2seproject" target="${target}"/>
+    </target>
+    <target name="extension/java/platform">
+        <ant dir="../extension/java/platform" target="${target}"/>
+    </target>
+    <target name="extension/javadoc">
+        <ant dir="../extension/javadoc" target="${target}"/>
+    </target>
+    <target name="extension/monitor">
+        <ant dir="../extension/monitor" target="${target}"/>
+    </target>
+    <target name="extension/objectbrowser/navigator">
+        <ant dir="../extension/objectbrowser/navigator" target="${target}"/>
+    </target>
+    <target name="extension/openide">
+        <ant dir="../extension/openide" target="${target}"/>
+    </target>
+    <target name="extension/projects/projectui">
+        <ant dir="../extension/projects/projectui" target="${target}"/>
+    </target>
+    <target name="extension/properties">
+        <ant dir="../extension/properties" target="${target}"/>
+    </target>
+    <target name="extension/refactoring">
+        <ant dir="../extension/refactoring" target="${target}"/>
+    </target>
+    <target name="extension/tasklist/docscan">
+        <ant dir="../extension/tasklist/docscan" target="${target}"/>
+    </target>
+    <target name="extension/utilities">
+        <ant dir="../extension/utilities" target="${target}"/>
+    </target>
+    <target name="extension/utilities/project">
+        <ant dir="../extension/utilities/project" target="${target}"/>
+    </target>
+    <target name="extension/vcscore">
+        <ant dir="../extension/vcscore" target="${target}"/>
+    </target>
+    <target name="extension/vcsgeneric">
+        <ant dir="../extension/vcsgeneric" target="${target}"/>
+    </target>
+    <target name="extension/web/core">
+        <ant dir="../extension/web/core" target="${target}"/>
+    </target>
+    <target name="extension/web/project">
+        <ant dir="../extension/web/project" target="${target}"/>
+    </target>
+    <target name="extension/xml/api">
+        <ant dir="../extension/xml/api" target="${target}"/>
+    </target>
+    <target name="extension/xml/catalog">
+        <ant dir="../extension/xml/catalog" target="${target}"/>
+    </target>
+    <target name="extension/xml/core">
+        <ant dir="../extension/xml/core" target="${target}"/>
+    </target>
+    <target name="extension/xml/css">
+        <ant dir="../extension/xml/css" target="${target}"/>
+    </target>
+    <target name="extension/xml/text-edit">
+        <ant dir="../extension/xml/text-edit" target="${target}"/>
+    </target>
+    <target name="insync">
+        <ant dir="../insync" target="${target}"/>
+    </target>
+    <target name="insync/api">
+        <ant dir="../insync/api" target="${target}"/>
+    </target>
+    <target name="jsfcl">
+        <ant dir="../jsfcl" target="${target}"/>
+    </target>
+    <target name="jsfloader">
+        <ant dir="../project/jsfloader" target="${target}"/>
+    </target>
+    <target name="jsfmetadata">
+        <ant dir="../jsfmetadata" target="${target}"/>
+    </target>
+    <target name="jsfsupport">
+        <ant dir="../jsfsupport" target="${target}"/>
+    </target>
+    <target name="jspsyntaxint">
+        <ant dir="../jspsyntaxint" target="${target}"/>
+    </target>
+    <target name="jwsdpsupport">
+        <ant dir="../jwsdpsupport" target="${target}"/>
+    </target>
+    <!-- XXX Change to ravelibs/ soon -->
+    <target name="ravelibs/jsf">
+        <ant dir="../ravelibs/jsf" target="${target}"/>
+    </target>
+    <target name="ravelibs/rowset">
+        <ant dir="../ravelibs/rowset" target="${target}"/>
+    </target>
+    <target name="licensing">
+        <ant dir="../licensing" target="${target}"/>
+    </target>
+    <target name="navigation">
+        <ant dir="../navigation" target="${target}"/>
+    </target>
+    <target name="opensrc">
+        <ant dir="../opensrc" target="${target}"/>
+    </target>
+    <target name="opensrc/batik">
+        <ant dir="../opensrc/batik" target="${target}"/>
+    </target>
+    <target name="opensrc/batik/script">
+        <ant dir="../opensrc/batik/script" target="${target}"/>
+    </target>
+    <target name="preview/support">
+        <ant dir="../preview/support" target="${target}"/>
+    </target>
+    <target name="project">
+        <ant dir="../project" target="${target}"/>
+    </target>
+    <target name="project/jsfloader">
+        <ant dir="../project/jsfloader" target="${target}"/>
+    </target>
+    <target name="project/jsf">
+        <ant dir="../project/jsf" target="${target}"/>
+    </target>
+    <target name="project/jsfproject">
+        <ant dir="../project/jsfproject" target="${target}"/>
+    </target>
+    <target name="project/jsfprojectapi">
+        <ant dir="../project/jsfprojectapi" target="${target}"/>
+    </target>
+    <target name="project/jsfportlet">
+        <ant dir="../project/jsfportlet" target="${target}"/>
+    </target>
+    <target name="project/navigationloader">
+        <ant dir="../project/navigationloader" target="${target}"/>
+    </target>
+    <target name="clean-project/jsfportlet">
+        <ant dir="../project/jsfportlet" target="clean"/>
+    </target>
+    <target name="portletcontainer">
+        <ant dir="../portletcontainer" target="${target}"/>
+    </target>
+    <target name="clean-portletcontainer">
+        <ant dir="../portletcontainer" target="${target}"/>
+    </target>
+    <target name="project/migration">
+        <ant dir="../project/migration" target="${target}"/>
+    </target>
+    <target name="clean-project/migration">
+        <ant dir="../project/migration" target="clean"/>
+    </target>
+    <target name="propertyeditors">
+        <ant dir="../propertyeditors" target="${target}"/>
+    </target>
+    <target name="ravehelp">
+        <ant dir="../ravehelp" target="${target}"/>
+    </target>
+    <target name="ravelibs/jsf-portlet">
+        <ant dir="../ravelibs/jsf-portlet" target="${target}"/>
+    </target>
+    <target name="ravelibs/portlet-api">
+        <ant dir="../ravelibs/portlet-api" target="${target}"/>
+    </target>
+    <target name="registration">
+        <ant dir="../registration" target="${target}"/>
+    </target>
+    <target name="servernav">
+        <ant dir="../servernav" target="${target}"/>
+    </target>
+    <target name="sql">
+        <ant dir="../sql" target="${target}"/>
+    </target>
+    <target name="sqleditor">
+        <ant dir="../dataconnectivity/sqleditor" target="${target}"/>
+    </target>
+    <target name="sunddapi">
+        <ant dir="../sunddapi" target="${target}"/>
+    </target>
+    <target name="studio-plugin">
+        <ant dir="../studio-plugin" target="${target}"/>
+    </target>
+    <target name="sunappsrvint">
+        <ant dir="../sunappsrvint" target="${target}"/>
+    </target>
+    <target name="toolbox">
+        <ant dir="../toolbox" target="${target}"/>
+    </target>
+    <target name="userdoc">
+        <ant dir="../userdoc" target="${target}"/>
+    </target>
+    <target name="visual">
+        <ant dir="../visual" target="${target}"/>
+    </target>
+    <target name="ravewebsvc">
+        <ant dir="../ravewebsvc" target="${target}"/>
+    </target>
+    <target name="dataprovider/designtime">
+        <ant dir="../dataprovider/designtime" target="${target}"/>
+    </target>
+    <target name="dataprovider/runtime">
+        <ant dir="../dataprovider/runtime" target="${target}"/>
+    </target>
+    <target name="xhtml">
+        <ant dir="../xhtml" target="${target}"/>
+    </target>
+    <target name="webui/designtime">
+        <ant dir="../webui/designtime" target="${target}"/>
+    </target>
+    <target name="webui/runtime">
+        <ant dir="../webui/runtime" target="${target}"/>
+    </target>
+    <target name="webui/themes">
+        <ant dir="../webui/themes" target="${target}"/>
+    </target>
+    <target name="welcome">
+        <ant dir="../welcome" target="${target}"/>
+    </target>
+    <target name="woodstock">
+        <ant dir="../woodstock" target="${target}"/>
+    </target>
+    <target name="ws61-plugin">
+        <ant dir="../ws61-plugin" target="${target}"/>
+    </target>
+    <target name="sampleapps/bundled">
+        <ant dir="../sampleapps/bundled" target="${target}"/>
+    </target>
+    
+    
+    <!-- These targets duplicate the functionality of the RE tools -->
+    <target name="download-jdk" description="Manually downloads the JDK TAR into this directory">
+        <antcall target="-download-jdk" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="download-jdk-all" description="Downloads All platform specific JDK ZIPS">
+        <antcall target="-download-jdk-all" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="download-netbeans-src" description="Downloads the Netbeans sources into this directory">
+        <antcall target="-get-netbeans-src" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+    
+    <target name="download-netbeans-binary" description="Downloads the Netbeans IDE binary into this directory">
+        <antcall target="-get-netbeans-bin" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>    
+
+    <target name="download-netbeans-platform-binary" description="Downloads Netbeans IDE platform specific ML binaries">
+	<antcall target="-get-netbeans-platform" inheritall="false">
+		<param name="bypass.cache.validation" value="true"/>
+	</antcall>
+    </target>   
+
+    <target name="download-netbeans-platform-binary-ml" description="Downloads Netbeans IDE platform specific ML binaries">
+        <antcall target="-get-netbeans-platform-ml" inheritall="false">
+                <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="download-ismp" description="Downloads ISMP">
+	<antcall target="-get-ismp" inheritall="false">
+	</antcall>
+    </target> 
+
+    <target name="download-as-binary" description="Downloads App Server">
+	<antcall target="-get-as-binary" inheritall="false">
+	</antcall>
+    </target> 
+
+   <target name="download-as-binary-platform" description="Downloads Platform Specific App Server">
+        <condition property="as.platform" value="${as.win}">
+            <os family="windows"/>
+        </condition>
+
+        <condition property="as.platform" value="${as.linux}">
+            <os name="Linux"/>
+        </condition>
+
+        <condition property="as.platform" value="${as.solsparc}">
+            <os name="SunOS" arch="sparc"/>
+        </condition>
+
+        <condition property="as.platform" value="${as.solx86}">
+            <os name="SunOS" arch="x86"/>
+        </condition>
+
+	<condition property="as.platform" value="${as.mac}">
+            <os family="mac"/>
+        </condition>
+
+	<mkdir dir="${as.cache.dir}"/>
+        <get src="${as.cache.server.url}/${as.platform}"
+             dest="${as.cache.dir}/${as.platform}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+ 
+    <target name="unzip-jdk" description="Downloads and unzips the shipping JDK">
+        <antcall target="-unzip-jdk" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+    
+    <target name="unzip-netbeans-src"  description="Downloads and unzips the Netbeans sources">
+        <antcall target="-unzip-netbeans-src" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+
+    <target name="unzip-netbeans-binary"  description="Downloads and unzips the Netbeans IDE binary">
+        <antcall target="-unzip-netbeans-bin" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+    </target>
+ 
+    <target name="-download-jdk" depends="init">
+        <condition property="jdk.name" value="${jdk.win}.tar">
+            <os family="windows"/>
+        </condition>
+        
+        <condition property="jdk.name" value="${jdk.linux}.tar">
+            <os name="Linux"/>
+        </condition>
+        
+        <condition property="jdk.name" value="${jdk.solsparc}.tar">
+            <os name="SunOS" arch="sparc"/>
+        </condition>
+        
+        <condition property="jdk.name" value="${jdk.solx86}.tar">
+            <os name="SunOS" arch="x86"/>
+        </condition>
+        
+        <get src="${jdk.cache.server.url}/tars/${jdk.name}"
+             dest="${cache.dir}/jdk-zip.tar" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="-download-jdk-all" depends="-check-jdk-online, init">
+        <mkdir dir="${jdk.cache.dir}"/>
+        <get src="${jdk.cache.server.url}/zips/${jdk.linux}.zip"
+             dest="${jdk.cache.dir}/${jdk.linux}.zip" usetimestamp="true" ignoreerrors="true"/>
+
+        <get src="${jdk.cache.server.url}/zips/${jdk.solsparc}.zip"
+             dest="${jdk.cache.dir}/${jdk.solsparc}.zip" usetimestamp="true" ignoreerrors="true"/>
+
+        <get src="${jdk.cache.server.url}/zips/${jdk.solx86}.zip"
+             dest="${jdk.cache.dir}/${jdk.solx86}.zip" usetimestamp="true" ignoreerrors="true"/>
+
+        <get src="${jdk.cache.server.url}/zips/${jdk.win}.zip"
+             dest="${jdk.cache.dir}/${jdk.win}.zip" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+    
+    <target name="-unzip-jdk" depends="-download-jdk, init">
+        <!-- use exec instead of the untar task, since the task does not preserve file permissions -->
+        <mkdir dir="${basedir}/ship-java"/>
+        <!-- <exec dir="${basedir}/ship-java" executable="tar" failonerror="true">
+            <arg line="xvf ${cache.dir}/jdk-zip.tar"/>
+        </exec> -->
+		<untar src="${cache.dir}/jdk-zip.tar" dest="${basedir}/ship-java"/>
+    </target>
+    
+    <target name="-unzip-netbeans-src" depends="-get-netbeans-src, init">
+        <!-- use exec to avoid the file permission preservation issue in ant -->
+        <exec dir="${basedir}" executable="unzip" failonerror="true">
+            <arg line="${cache.dir}/${nb.src.zip} -d ${nb.src.base}"/>
+        </exec>
+    </target>
+
+    <target name="-unzip-netbeans-bin" depends="-get-netbeans-bin, init">
+        <!-- use exec to avoid the file permission preservation issue in ant -->
+        <exec dir="${basedir}" executable="unzip" failonerror="true">
+            <arg line="${cache.dir}/${nb.bin.zip} -d ${nb.bin.base}"/>
+        </exec>
+    </target>    
+    
+    <target name="-check-ravebuild-online" depends="init">
+        <condition property="is.ravebuild.online">
+            <http url="${ravebuild.cache.server.url}"/>
+        </condition>
+        <echo>Online check: ${is.ravebuild.online}</echo>
+    </target>
+
+    <target name="-check-ismp-online" depends="init">
+	<condition property="is.ismp.online">
+            <http url="${ismp.cache.server.url}"/>
+	</condition>
+	<echo>Online check: ${is.ismp.online}</echo>
+    </target>
+
+    <target name="-check-as-online" depends="init">
+	<condition property="is.as.online">
+	    <http url="${as.cache.server.url}"/>
+	</condition>
+	<echo>Online check: ${is.as.online}</echo>
+    </target>
+
+    <target name="-check-jdk-online" depends="init">
+        <condition property="is.jdk.online">
+            <http url="${jdk.cache.server.url}"/>
+        </condition>
+        <echo>Online check: ${is.jdk.online}</echo>
+    </target>
+
+    <target name="-check-netbeans-src" depends="init">
+        <available file="${cache.dir}/${nb.src.zip}" property="netbeans.src.zip.available"/>
+    </target>
+
+    <target name="-check-netbeans-bin" depends="init">
+        <available file="${cache.dir}/${nb.bin.zip}" property="netbeans.bin.zip.available"/>
+    </target>
+
+    <target name="-get-netbeans-src" depends="-check-ravebuild-online, -check-netbeans-src, init" unless="netbeans.src.zip.available">
+	<mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.src.zip}" 
+             dest="${nb.cache.dir}/${nb.src.zip}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="-get-netbeans-bin" depends="-check-ravebuild-online, -check-netbeans-bin, init" unless="netbeans.bin.zip.available">
+	<mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.bin.zip}" 
+             dest="${nb.cache.dir}/${nb.bin.zip}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+  
+    <target name="-get-netbeans-platform" depends="-check-ravebuild-online, init">
+	<mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.linux}"
+             dest="${nb.cache.dir}/${nb.linux}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${ravebuild.cache.server.url}/${nb.mac}"
+             dest="${nb.cache.dir}/${nb.mac}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${ravebuild.cache.server.url}/${nb.solsparc}"
+             dest="${nb.cache.dir}/${nb.solsparc}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${ravebuild.cache.server.url}/${nb.solx86}"
+             dest="${nb.cache.dir}/${nb.solx86}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${ravebuild.cache.server.url}/${nb.win}"
+             dest="${nb.cache.dir}/${nb.win}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="-get-netbeans-platform-ml" depends="-check-ravebuild-online, init">
+        <mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.linux.ml}"
+             dest="${nb.cache.dir}/${nb.linux.ml}" usetimestamp="true" ignoreerrors="true"/>
+        <get src="${ravebuild.cache.server.url}/${nb.mac.ml}"
+             dest="${nb.cache.dir}/${nb.mac.ml}" usetimestamp="true" ignoreerrors="true"/>
+        <get src="${ravebuild.cache.server.url}/${nb.solsparc.ml}"
+             dest="${nb.cache.dir}/${nb.solsparc.ml}" usetimestamp="true" ignoreerrors="true"/>
+        <get src="${ravebuild.cache.server.url}/${nb.solx86.ml}"
+             dest="${nb.cache.dir}/${nb.solx86.ml}" usetimestamp="true" ignoreerrors="true"/>
+        <get src="${ravebuild.cache.server.url}/${nb.win.ml}"
+             dest="${nb.cache.dir}/${nb.win.ml}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="-get-ismp" depends="-check-ismp-online, init">
+	<mkdir dir="${ismp.cache.dir}"/>
+	<get src="${ismp.cache.server.url}/${ismp.name}"
+             dest="${ismp.cache.dir}/${ismp.name}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
+    <target name="-get-as-binary" depends="-check-as-online, init">
+	<mkdir dir="${as.cache.dir}"/>
+	<get src="${as.cache.server.url}/${as.linux}"
+             dest="${as.cache.dir}/${as.linux}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${as.cache.server.url}/${as.mac}"
+             dest="${as.cache.dir}/${as.mac}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${as.cache.server.url}/${as.solsparc}"
+             dest="${as.cache.dir}/${as.solsparc}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${as.cache.server.url}/${as.solx86}"
+             dest="${as.cache.dir}/${as.solx86}" usetimestamp="true" ignoreerrors="true"/>
+	<get src="${as.cache.server.url}/${as.win}"
+             dest="${as.cache.dir}/${as.win}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+ 
+    <target name="en-pack-installers">
+
+        <!-- Clean up some sample complib modules before building installers -->
+	<ant dir="../sampleapps/complibs/ajax" target="clean"/>
+
+        <property environment="myenv"/>
+        <echo> Installer installation dir is: ${myenv.ISMP}</echo>
+        <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
+        <ant dir="../installer/nb_installer/creator" target="build">
+            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="ismp.home" location="${myenv.ISMP}"/>
+            <property name="installer.basename" value="${installer.basename}"/>
+	    <property name="installer.suffix" value="${installer.suffix}"/>
+        </ant>
+    </target>
+   
+    <target name="ml-pack-installers">
+        <property environment="myenv"/>
+        <echo> Installer installation dir is: ${myenv.ISMP}</echo>
+        <!-- ant dir="${nb_all.dir}/installer/profiler" target="build-ml" -->
+        <ant dir="../installer/nb_installer/creator" target="build-ml">
+            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="ismp.home" location="${myenv.ISMP}"/>
+            <property name="installer.basename" value="${installer.basename}"/>
+            <property name="installer.suffix" value="${installer.suffix}"/>
+        </ant>
+    </target>
+ 
+    <target name="en-pack-installers-cn">
+
+        <!-- Clean up some sample complib modules before building installers -->
+	<ant dir="../sampleapps/complibs/ajax" target="clean"/>
+
+        <property environment="myenv"/>
+        <echo> Installer installation dir is: ${myenv.ISMP}</echo>
+        <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
+        <ant dir="../installer/nb_installer/creator" target="build-cn">
+            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="ismp.home" location="${myenv.ISMP}"/>
+            <property name="installer.basename" value="${installer.basename}"/>
+	    <property name="installer.suffix" value="${installer.suffix}"/>
+        </ant>
+    </target>
+   
+    <target name="ml-pack-installers-cn">
+        <property environment="myenv"/>
+        <echo> Installer installation dir is: ${myenv.ISMP}</echo>
+        <!-- ant dir="${nb_all.dir}/installer/profiler" target="build-ml" -->
+        <ant dir="../installer/nb_installer/creator" target="build-ml-cn">
+            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="ismp.home" location="${myenv.ISMP}"/>
+            <property name="installer.basename" value="${installer.basename}"/>
+            <property name="installer.suffix" value="${installer.suffix}"/>
+        </ant>
+    </target>
+</project>
+

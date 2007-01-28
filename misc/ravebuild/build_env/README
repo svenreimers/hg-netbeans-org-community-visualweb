@@ -1,0 +1,26 @@
+
+HOW TO INSTALL CREATOR PACK - updated 05/09/06
+
+0. Make sure that you have jdk 1.5_06 preinstalled on your system.
+
+1. Download and unzip NB by extracting the contents of 
+   netbeans-5.5-daily-bin-2006...-ide-...zip;
+
+   Manually modify $installdir/etc/netbeans.conf for the following:
+
+   Replace the line "#jdkhome=..." with
+   jdkhome=<path to jdk 1.5_06>
+
+2. Download and install the latest CreatorPack-... installer. Give NB install 
+   location when being asked. Make sure that the build is after this INF:
+   http://inf.central/inf/integrationReport.jsp?id=92439
+   for example, /net/clue.sfbay/kits/rave/main/Build060424_7/pack_installers
+
+3. Download and install glassfish and add this server to Netbeans:
+   - Run the installer: java -Xmx256m -jar glassfish-installer-9.0-*.jar
+   - cd glassfish; ant -f setup.xml
+   - Configure netbeans: select Tools>Server Manager(Or from runtime tab, right 
+     click at Server and select Add server). Click Add Server button. Follow 
+     the wizard and specify the Platform Location to glassfish directory which 
+     you just installed. 
+

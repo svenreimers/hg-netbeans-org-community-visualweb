@@ -1,0 +1,14 @@
+/*
+ * __NAME__.java
+ *
+ * Created on __DATE__, __TIME__
+ * Copyright __USER__
+ */
+package untitled;
+
+import com.sun.rave.web.ui.appbase.AbstractPageBean;
+
+public class __NAME__ extends AbstractPageBean {
+    public __NAME__() {
+    }
+}

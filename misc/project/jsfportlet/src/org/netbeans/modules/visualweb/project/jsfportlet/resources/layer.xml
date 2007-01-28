@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The contents of this file are subject to the terms of the Common Development
+and Distribution License (the License). You may not use this file except in
+compliance with the License.
+
+You can obtain a copy of the License at http://www.netbeans.org/cddl.html
+or http://www.netbeans.org/cddl.txt.
+
+When distributing Covered Code, include this CDDL Header Notice in each file
+and include the License file at http://www.netbeans.org/cddl.txt.
+If applicable, add the following below the CDDL Header, with the fields
+enclosed by brackets [] replaced by your own identifying information:
+"Portions Copyrighted [year] [name of copyright owner]"
+
+The Original Software is NetBeans. The Initial Developer of the Original
+Software is Sun Microsystems, Inc. Portions Copyright 1997-2007 Sun
+Microsystems, Inc. All Rights Reserved.
+-->
+
+<?xml-stylesheet type="text/xml" href="http://openide.netbeans.org/fs/filesystem.xsl"?>
+<!DOCTYPE filesystem PUBLIC "-//NetBeans//DTD Filesystem 1.1//EN" "http://www.netbeans.org/dtds/filesystem-1_1.dtd">
+<filesystem>
+    <folder name="Templates">
+        <!-- XXX Portlet is not available for ShortFin
+        <folder name="Project">
+            <attr name="Web" boolvalue="true"/>
+            
+            <folder name="Web">
+                <attr name="instantiatingWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsf/ui/resources/web.html"/>                
+                <attr name="emptyWeb.xml/portletProject.xml" boolvalue="true"/>
+                <file name="portletProject.xml">
+                   <attr name="template" boolvalue="true"/>
+                   <attr name="templateWizardIterator" newvalue="org.netbeans.modules.visualweb.project.jsfportlet.ui.wizard.PortletProjectWizardIterator"/>
+                   <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.ui.wizard.resources.Bundle"/>
+                   <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/ui/wizard/resources/PortletProjectIcon.gif"/>
+                   <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/ui/wizard/resources/PortletProject.html"/>
+                    <attr name="templateCategory" stringvalue="rave-portlet"/>
+                </file>
+            </folder>
+        </folder>
+        -->
+        <attr name="JsfAdvanced/JsfPortlet" boolvalue="true"/>
+        <folder name="JsfPortlet">
+            <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.Bundle"/>        
+            <file name="portletWeb.xml" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/portlet-web.xml.template">
+                <attr name="template" boolvalue="true" />
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/portletWebTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>    
+             <file name="portlet.xml" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/portlet.xml.template">
+                <attr name="template" boolvalue="true" />
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/portletTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>    
+            <file name="portlet.tld" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/portlet.tld.template">
+                <attr name="template" boolvalue="true" />
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/portletTLDTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>    
+
+            <file name="PortletPage.jsp" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/PortletPage.jsp.template">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org.netbeans.modules.html.htmlObject.gif"/>
+                <attr name="template" boolvalue="true" />
+                <attr name="templateWizardIterator" newvalue="org.netbeans.modules.visualweb.project.jsf.ui.WebFormIterator"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/PortletPageTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>
+            <attr name="PortletPage.jsp/PortletPage.java" boolvalue="true"/>
+            <file name="PortletPage.java"  url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/PortletPage.java.template">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/PortletJavaPageTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>
+        <file name="PortletPageFragment.jspf" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/PortletPageFragment.jspf.template">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsfportlet.resources.templates.resources.Bundle"/>
+                <attr name="SystemFileSystem.icon" urlvalue="nbresloc:/org.netbeans.modules.html.htmlObject.gif"/>
+                <attr name="template" boolvalue="true" />
+                <attr name="templateWizardIterator" newvalue="org.netbeans.modules.visualweb.project.jsf.ui.WebFormIterator"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/descriptions/PortletPageFragmentTemplateHelp.html" />
+                <attr name="templateCategory" stringvalue="rave-portlet"/>
+            </file>
+            <attr name="PortletPageFragment.jspf/PortletPageFragment.java" boolvalue="true"/>
+            <file name="PortletPageFragment.java" url="/org/netbeans/modules/visualweb/project/jsfportlet/resources/templates/PortletPageFragment.java.template">
+                <attr name="SystemFileSystem.localizingBundle" stringvalue="org.netbeans.modules.visualweb.project.jsf.resources.Bundle"/>
+                <attr name="templateWizardURL" urlvalue="nbresloc:/org/netbeans/modules/visualweb/project/jsf/resources/templates/descriptions/pageJavaTemplateHelp.html" />
+            </file>
+            <attr name="PageFragment.java/html.html" boolvalue="true"/>
+            
+
+
+        </folder> <!--JsfPortlet-->
+
+    </folder> <!-- Templates-->
+    <folder name="org-netbeans-api-project-libraries">
+        <folder name="Libraries">
+            <file name="portlet-runtime.xml" url="/org/netbeans/modules/visualweb/project/jsfportlet/libraries/portlet-runtime.xml"/>
+            <file name="jsf-portlet-runtime.xml" url="/org/netbeans/modules/visualweb/project/jsfportlet/libraries/jsf-portlet-runtime.xml"/>
+        </folder>
+    </folder>
+    
+    
+    
+</filesystem>

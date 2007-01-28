@@ -1,0 +1,33 @@
+<?xml version='1.0' encoding='UTF-8'?>
+
+<!--
+ Copyright 2005 Sun Microsystems, Inc. All rights reserved.
+ SUN PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+-->
+
+<!DOCTYPE faces-config PUBLIC
+  "-//Sun Microsystems, Inc.//DTD JavaServer Faces Config 1.0//EN"
+  "http://java.sun.com/dtd/web-facesconfig_1_1.dtd">
+
+
+<faces-config>
+
+
+  <!-- Install Replacement Factory Objects -->
+  <factory>
+    <faces-context-factory>
+      com.sun.faces.portlet.FacesContextFactoryImpl
+    </faces-context-factory>
+    <lifecycle-factory>
+      com.sun.faces.portlet.LifecycleFactoryImpl
+    </lifecycle-factory>
+  </factory>
+  
+  <!-- Install Replacement Application Objects -->  
+  <application>
+    <view-handler>
+        com.sun.faces.portlet.ViewHandlerImpl
+    </view-handler>
+  </application>   
+
+</faces-config>
