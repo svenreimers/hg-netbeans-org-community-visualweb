@@ -21,6 +21,7 @@ Visual Web top level build script.
 -->
 <project name="ravebuild" default="build" basedir=".">
 
+    <property environment="env"/>
     <!-- XXX Also like in nbbuild, allow to specify user properties in ravebuild-->
     <!-- First things first: read the user's and/or -->
     <!-- the site's build properties files.         -->
@@ -196,12 +197,10 @@ Visual Web top level build script.
     
     <!-- Overriding all target.
     Reason: removing commit-validation, adding sanity-start -->
-    <!-- Removed sanity-start for now to avoid all the ide exceptions in the visualweb module -->
-    <target name="all" depends="build-zip" description="Build the IDE, run basic validation tests, start the IDE, and create the zip"/>
+    <target name="all" depends="build-zip,sanity-start" description="Build the IDE, run basic validation tests, start the IDE, and create the zip"/>
     
     <!-- All target without zipping the IDE -->
-    <!-- Removed sanity-start for now to avoid all the ide exceptions in the visualweb module -->
-    <target name="all-nozip" depends="build" description="Build the IDE, run basic validation tests, and start the IDE"/>
+    <target name="all-nozip" depends="build,sanity-start" description="Build the IDE, run basic validation tests, and start the IDE"/>
     
     <target name="build" depends="prepare-netbeans-dest-dir, copy-jdk" description="Build the IDE, run basic validation tests, and start the IDE">
         <ant antfile="../visualwebsuite/build.xml" target="build" inheritall="false"/>
@@ -258,26 +257,34 @@ Visual Web top level build script.
     <target name="-validate-cache">
         <condition property="netbeans.bin.available">
             <or>
+		<available file="${basedir}/../../nbbuild" type="dir"/>
                 <available file="${netbeans.location}/bin/netbeans"/>
-                <isset property="bypass.cache.validation"/>
+		<isset property="bypass.cache.validation"/>
             </or>
-        </condition>
-        
+	</condition>
         <fail unless="netbeans.bin.available">
-            Netbeans binary under ${netbeans.location} could not be found.  A cache update may be needed.
+            Netbeans binary under ${netbeans.location} OR ${basedir}/../../nbbuildccould not be found.  A cache update may be needed.
         </fail>
 
         <condition property="jdk.available">
             <or>
-                <available file="${basedir}/ship-java/COPYRIGHT"/>
-                <os family="mac"/>
-                <isset property="bypass.cache.validation"/>
-            </or>
+	        <available file="${env.JAVA_HOME}/COPYRIGHT"/>
+		<os family="mac"/>
+	        <isset property="bypass.cache.validation"/>
+	    </or>
         </condition>
-        
         <fail unless="jdk.available">
-            The bundled version of the JVM under ${basedir}/ship-java could not be found.  A cache update may be needed.
+            The bundled version of the JVM under ${env.JAVA_HOME}/bin/java could not be found.  A cache update may be needed.
         </fail>
+
+	<condition property="jdk.version">
+	    <equals arg1="${ant.java.version}" arg2="1.5" />
+	</condition>
+	<fail unless="jdk.version">
+	    The bundled version of the JVM under ${env.JAVA_HOME} should be 1.5.0_06.
+	    Run the "ant unzip-jdk" target to download and unzip the required jdk.
+	    Set JAVA_HOME to this new JDK location
+	</fail>
     </target>
     
     <!-- Overriding init target.
@@ -465,8 +472,8 @@ the ${netbeans.dest.dir}/bin/ directory.
             </or>
         </condition>
 	<available property="shipJdkHome" 
-		   value="${basedir}/ship-java"
-		   file="${basedir}/ship-java/COPYRIGHT"/>
+		   value="${env.JAVA_HOME}"
+		   file="${env.JAVA_HOME}/COPYRIGHT"/>
 	<condition property="shipJdkHome" value="${jdkhome}">
 	    <not>
        		<isset property="shipJdkHome"/>
@@ -1017,14 +1024,14 @@ the ${netbeans.dest.dir}/bin/ directory.
         <get src="${jdk.cache.server.url}/zips/${jdk.win}.zip"
              dest="${jdk.cache.dir}/${jdk.win}.zip" usetimestamp="true" ignoreerrors="true"/>
     </target>
-    
+
     <target name="-unzip-jdk" depends="-download-jdk, init">
-        <!-- use exec instead of the untar task, since the task does not preserve file permissions -->
-        <mkdir dir="${basedir}/ship-java"/>
-        <!-- <exec dir="${basedir}/ship-java" executable="tar" failonerror="true">
-            <arg line="xvf ${cache.dir}/jdk-zip.tar"/>
-        </exec> -->
-		<untar src="${cache.dir}/jdk-zip.tar" dest="${basedir}/ship-java"/>
+	<!-- use exec instead of the untar task, since the task does not preserve file permissions -->
+      	<mkdir dir="${basedir}/ship-java"/>
+      	<!-- <exec dir="${basedir}/ship-java" executable="tar" failonerror="true">
+		<arg line="xvf ${cache.dir}/jdk-zip.tar"/>
+	</exec> -->
+	<untar src="${cache.dir}/jdk-zip.tar" dest="${basedir}/ship-java"/>
     </target>
     
     <target name="-unzip-netbeans-src" depends="-get-netbeans-src, init">
