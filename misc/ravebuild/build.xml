@@ -1147,7 +1147,7 @@ the ${netbeans.dest.dir}/bin/ directory.
     <target name="en-pack-installers">
 
         <!-- Clean up some sample complib modules before building installers -->
-	<ant dir="../sampleapps/complibs/ajax" target="clean"/>
+		<!-- <ant dir="../sampleapps/complibs/ajax" target="clean"/> -->
 
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
@@ -1175,7 +1175,7 @@ the ${netbeans.dest.dir}/bin/ directory.
     <target name="en-pack-installers-cn">
 
         <!-- Clean up some sample complib modules before building installers -->
-	<ant dir="../sampleapps/complibs/ajax" target="clean"/>
+		<!-- <ant dir="../sampleapps/complibs/ajax" target="clean"/> -->
 
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
