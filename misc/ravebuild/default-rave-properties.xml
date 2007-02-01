@@ -34,9 +34,9 @@ Microsystems, Inc. All Rights Reserved.
   
   <!-- properties related to netbeans -->
   <property name="nb.cache.dir" location="${cache.dir}"/>
-  <property name="en.nb.name.part1" value="netbeans-5_5-special"/>
-  <property name="en.nb.name.part2" value="200701190000"/>
-  <property name="en.nb.name.part3" value="19_Jan_2007_0000"/>
+  <property name="en.nb.name.part1" value="netbeans-6_0-special"/>
+  <property name="en.nb.name.part2" value="200701310000"/>
+  <property name="en.nb.name.part3" value="31_Jan_2007_0000"/>
   <property name="ml.nb.name.part1" value="netbeans-5_5-daily"/>
   <property name="ml.nb.name.part2" value="200611140100"/>
   <property name="ml.nb.name.part3" value="14_Nov_2006_0100"/> 
