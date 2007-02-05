@@ -343,8 +343,8 @@ Visual Web top level build script.
 
         <!-- package the zip file -->
         <zip destfile="${rave.zip.dest}/RAVE-${buildnum}.zip" update="true" duplicate="preserve">
-            <zipfileset file="${netbeans.dest.dir}/bin/creator" filemode="755" prefix="${rave.zip.prefix}/bin"/>
-            <zipfileset file="${netbeans.dest.dir}/platform6/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform6/lib"/>
+            <zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
+            <zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform7/lib"/>
             <zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
                 <include name="*.sh"/>
             </zipfileset>

@@ -27,7 +27,7 @@ Microsystems, Inc. All Rights Reserved.
   
   <!-- setting dest and prefix for zip file -->
   <property name="rave.zip.dest" location="${rave_all}/ravebuild"/>
-  <property name="rave.zip.prefix" value="creator"/>
+  <property name="rave.zip.prefix" value="visualweb1"/>
   <property name="cache.dir" location="${rave_all}/ravebuild"/>
  
   <property name="jdkhome" value="${netbeans.dest.dir}/java"/>
