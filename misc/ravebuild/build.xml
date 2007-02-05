@@ -1152,7 +1152,7 @@ the ${netbeans.dest.dir}/bin/ directory.
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
-        <ant dir="../installer/nb_installer/creator" target="build">
+        <ant dir="../../installer/nb_installer/creator" target="build">
             <property name="cluster.dir" location="rave/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
@@ -1164,7 +1164,7 @@ the ${netbeans.dest.dir}/bin/ directory.
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build-ml" -->
-        <ant dir="../installer/nb_installer/creator" target="build-ml">
+        <ant dir="../../installer/nb_installer/creator" target="build-ml">
             <property name="cluster.dir" location="rave/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
@@ -1180,7 +1180,7 @@ the ${netbeans.dest.dir}/bin/ directory.
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
-        <ant dir="../installer/nb_installer/creator" target="build-cn">
+        <ant dir="../../installer/nb_installer/creator" target="build-cn">
             <property name="cluster.dir" location="rave/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
@@ -1192,7 +1192,7 @@ the ${netbeans.dest.dir}/bin/ directory.
         <property environment="myenv"/>
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build-ml" -->
-        <ant dir="../installer/nb_installer/creator" target="build-ml-cn">
+        <ant dir="../../installer/nb_installer/creator" target="build-ml-cn">
             <property name="cluster.dir" location="rave/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
