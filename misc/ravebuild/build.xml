@@ -343,14 +343,15 @@ Visual Web top level build script.
 
         <!-- package the zip file -->
         <zip destfile="${rave.zip.dest}/RAVE-${buildnum}.zip" update="true" duplicate="preserve">
-            <zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
+            <!-- <zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
             <zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform7/lib"/>
             <zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
                 <include name="*.sh"/>
             </zipfileset>
             <zipfileset dir="${netbeans.dest.dir}" prefix="${rave.zip.prefix}">
                 <exclude name="*.built" />
-            </zipfileset>
+            </zipfileset> -->
+		    <zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${rave.zip.prefix}"/>
         </zip>
         <echo>Build created; see RAVE-${buildnum}.zip (in ravebuild/).
 If you like, you may run the IDE straight from
