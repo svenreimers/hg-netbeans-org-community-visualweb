@@ -97,7 +97,7 @@ Visual Web top level build script.
         unless="skip.netbeans.copy">
         <mkdir dir="${netbeans.dest.dir}"/>
         <copy overwrite="true" todir="${netbeans.dest.dir}">
-            <fileset dir="${netbeans.location}" includes="**"/>
+            <fileset dir="${netbeans.dir}" includes="**"/>
         </copy>
         <chmod perm="755" file="${netbeans.dest.dir}/bin/netbeans"/>
         <property name="cluster.location" location="${netbeans.dest.dir}/visualweb1"/>
@@ -255,10 +255,22 @@ Visual Web top level build script.
     </target>
 
     <target name="-validate-cache">
+
+        <condition property="netbeans.dir.tmp" value="${netbeans.location}">
+            <available file="${netbeans.location}/bin/netbeans"/>
+        </condition>
+
+        <condition property="netbeans.dir" value="../../nbbuild/netbeans">
+            <not>
+                <isset property="netbeans.dir.tmp"/>
+            </not>
+        </condition>
+        <property name="netbeans.dir" location="${netbeans.location}"/>
+
+
         <condition property="netbeans.bin.available">
             <or>
-		<available file="${basedir}/../../nbbuild" type="dir"/>
-                <available file="${netbeans.location}/bin/netbeans"/>
+                <available file="${netbeans.dir}/bin/netbeans"/>
 		<isset property="bypass.cache.validation"/>
             </or>
 	</condition>
@@ -1043,6 +1055,7 @@ the ${netbeans.dest.dir}/bin/ directory.
     </target>
 
     <target name="-unzip-netbeans-bin" depends="-get-netbeans-bin, init">
+        <mkdir dir="${nb.bin.base}"/>
         <!-- use exec to avoid the file permission preservation issue in ant -->
         <exec dir="${basedir}" executable="unzip" failonerror="true">
             <arg line="${cache.dir}/${nb.bin.zip} -d ${nb.bin.base}"/>
