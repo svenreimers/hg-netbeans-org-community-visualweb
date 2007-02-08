@@ -59,6 +59,7 @@ Microsystems, Inc. All Rights Reserved.
 
   <property name="nb.bin.base" location="${rave_all}/ravebuild"/>
   <property name="nb.src.base" location="${rave_all}/ravebuild"/>
+  <property name="nb.bin.dir" location="${nb.bin.base}/netbeans"/>
   <property name="nb.src.dir" location="${nb.src.base}/netbeans-src"/>
   <property name="nb.forked.modules.dir" location="${rave_all}"/>
   <property name="l10n.dist.dir" location="${rave_all}/ravebuild/l10ndist"/>  

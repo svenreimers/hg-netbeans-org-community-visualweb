@@ -1049,6 +1049,7 @@ the ${netbeans.dest.dir}/bin/ directory.
     
     <target name="-unzip-netbeans-src" depends="-get-netbeans-src, init">
         <!-- use exec to avoid the file permission preservation issue in ant -->
+	<delete dir="${nb.src.dir}" failonerror="false"/>
         <exec dir="${basedir}" executable="unzip" failonerror="true">
             <arg line="${cache.dir}/${nb.src.zip} -d ${nb.src.base}"/>
         </exec>
@@ -1057,6 +1058,7 @@ the ${netbeans.dest.dir}/bin/ directory.
     <target name="-unzip-netbeans-bin" depends="-get-netbeans-bin, init">
         <mkdir dir="${nb.bin.base}"/>
         <!-- use exec to avoid the file permission preservation issue in ant -->
+	<delete dir="${nb.bin.dir}" failonerror="false"/>
         <exec dir="${basedir}" executable="unzip" failonerror="true">
             <arg line="${cache.dir}/${nb.bin.zip} -d ${nb.bin.base}"/>
         </exec>
