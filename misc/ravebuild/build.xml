@@ -994,10 +994,16 @@ the ${netbeans.dest.dir}/bin/ directory.
         <antcall target="-unzip-netbeans-src" inheritall="false">
             <param name="bypass.cache.validation" value="true"/>
         </antcall>
+	<antcall target="-unzip-netbeans-graph-src" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
     </target>
 
     <target name="unzip-netbeans-binary"  description="Downloads and unzips the Netbeans IDE binary">
         <antcall target="-unzip-netbeans-bin" inheritall="false">
+            <param name="bypass.cache.validation" value="true"/>
+        </antcall>
+	<antcall target="-unzip-netbeans-graph-bin" inheritall="false">
             <param name="bypass.cache.validation" value="true"/>
         </antcall>
     </target>
@@ -1055,6 +1061,12 @@ the ${netbeans.dest.dir}/bin/ directory.
         </exec>
     </target>
 
+    <target name="-unzip-netbeans-graph-src" depends="-get-netbeans-graph-src, init">
+        <exec dir="${basedir}" executable="unzip" failonerror="true">
+            <arg line="${cache.dir}/${nb.graph.src.zip} -d ${nb.src.base}"/>
+        </exec>
+    </target>
+
     <target name="-unzip-netbeans-bin" depends="-get-netbeans-bin, init">
         <mkdir dir="${nb.bin.base}"/>
         <!-- use exec to avoid the file permission preservation issue in ant -->
@@ -1063,6 +1075,12 @@ the ${netbeans.dest.dir}/bin/ directory.
             <arg line="${cache.dir}/${nb.bin.zip} -d ${nb.bin.base}"/>
         </exec>
     </target>    
+
+    <target name="-unzip-netbeans-graph-bin" depends="-get-netbeans-graph-bin, init">
+        <exec dir="${basedir}" executable="unzip" failonerror="true">
+            <arg line="${cache.dir}/${nb.graph.bin.zip} -d ${nb.bin.base}"/>
+        </exec>
+    </target> 
     
     <target name="-check-ravebuild-online" depends="init">
         <condition property="is.ravebuild.online">
@@ -1096,8 +1114,16 @@ the ${netbeans.dest.dir}/bin/ directory.
         <available file="${cache.dir}/${nb.src.zip}" property="netbeans.src.zip.available"/>
     </target>
 
+    <target name="-check-netbeans-graph-src" depends="init">
+        <available file="${cache.dir}/${nb.graph.src.zip}" property="netbeans.graph.src.zip.available"/>
+    </target>
+
     <target name="-check-netbeans-bin" depends="init">
         <available file="${cache.dir}/${nb.bin.zip}" property="netbeans.bin.zip.available"/>
+    </target>
+
+    <target name="-check-netbeans-graph-bin" depends="init">
+        <available file="${cache.dir}/${nb.graph.bin.zip}" property="netbeans.graph.bin.zip.available"/>
     </target>
 
     <target name="-get-netbeans-src" depends="-check-ravebuild-online, -check-netbeans-src, init" unless="netbeans.src.zip.available">
@@ -1106,12 +1132,24 @@ the ${netbeans.dest.dir}/bin/ directory.
              dest="${nb.cache.dir}/${nb.src.zip}" usetimestamp="true" ignoreerrors="true"/>
     </target>
 
+    <target name="-get-netbeans-graph-src" depends="-check-ravebuild-online, -check-netbeans-graph-src, init" unless="netbeans.graph.src.zip.available">
+        <mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.graph.src.zip}"
+             dest="${nb.cache.dir}/${nb.graph.src.zip}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
     <target name="-get-netbeans-bin" depends="-check-ravebuild-online, -check-netbeans-bin, init" unless="netbeans.bin.zip.available">
 	<mkdir dir="${nb.cache.dir}"/>
         <get src="${ravebuild.cache.server.url}/${nb.bin.zip}" 
              dest="${nb.cache.dir}/${nb.bin.zip}" usetimestamp="true" ignoreerrors="true"/>
     </target>
-  
+
+    <target name="-get-netbeans-graph-bin" depends="-check-ravebuild-online, -check-netbeans-graph-bin, init" unless="netbeans.graph.bin.zip.available">
+        <mkdir dir="${nb.cache.dir}"/>
+        <get src="${ravebuild.cache.server.url}/${nb.graph.bin.zip}"
+             dest="${nb.cache.dir}/${nb.graph.bin.zip}" usetimestamp="true" ignoreerrors="true"/>
+    </target>
+
     <target name="-get-netbeans-platform" depends="-check-ravebuild-online, init">
 	<mkdir dir="${nb.cache.dir}"/>
         <get src="${ravebuild.cache.server.url}/${nb.linux}"

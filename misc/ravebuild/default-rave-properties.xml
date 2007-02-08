@@ -45,6 +45,9 @@ Microsystems, Inc. All Rights Reserved.
   <property name="nb.src.zip" value="${en.nb.name.part1}-src-${en.nb.name.part2}-ide_sources-${en.nb.name.part3}.zip"/>
   <property name="nb.bin.zip" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-ide-${en.nb.name.part3}.zip"/>
 
+  <property name="nb.graph.src.zip" value="netbeans-graph-src.zip"/>
+  <property name="nb.graph.bin.zip" value="netbeans-graph-lib-binary.zip"/>
+
   <property name="nb.linux" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-linux-${en.nb.name.part3}.bin"/>
   <property name="nb.mac" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-macosx-${en.nb.name.part3}.tar.gz"/>
   <property name="nb.solsparc" value="${en.nb.name.part1}-bin-${en.nb.name.part2}-solaris-sparc-${en.nb.name.part3}.bin"/>
