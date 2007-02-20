@@ -994,16 +994,10 @@ the ${netbeans.dest.dir}/bin/ directory.
         <antcall target="-unzip-netbeans-src" inheritall="false">
             <param name="bypass.cache.validation" value="true"/>
         </antcall>
-	<antcall target="-unzip-netbeans-graph-src" inheritall="false">
-            <param name="bypass.cache.validation" value="true"/>
-        </antcall>
     </target>
 
     <target name="unzip-netbeans-binary"  description="Downloads and unzips the Netbeans IDE binary">
         <antcall target="-unzip-netbeans-bin" inheritall="false">
-            <param name="bypass.cache.validation" value="true"/>
-        </antcall>
-	<antcall target="-unzip-netbeans-graph-bin" inheritall="false">
             <param name="bypass.cache.validation" value="true"/>
         </antcall>
     </target>
