@@ -303,7 +303,7 @@ Visual Web top level build script.
     Reason: Adding setup-nbm-signing targets
     and setup of buildnum and nbm.target.dir properties -->
     <target name="init" depends="-validate-cache, set-buildnumber, bootstrap">
-        <property name="buildnum" value="ide-${buildnumber}"/>
+		<property name="buildnum" value="ide-${buildnumber}"/>
         <property name="sanitystart.args" value="-J-Dnetbeans.close=true ${sanitystart.args.additional}"/>
         <!-- Adding new value -->
         <property name="nbm.target.dir" location="nbms" />
@@ -351,27 +351,31 @@ Visual Web top level build script.
             description="Create a complete build including a ZIP distribution (but do not try it).">
         <!-- zip task not well suited to making final build, as it does not set +x bits -->
         <!-- so on Unix try to use native ZIP first -->
-        <delete file="${rave.zip.dest}/RAVE-${buildnum}.zip"/>
 
-        <!-- package the zip file -->
-        <zip destfile="${rave.zip.dest}/RAVE-${buildnum}.zip" update="true" duplicate="preserve">
-            <!-- <zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
-            <zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform7/lib"/>
-            <zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
+		<!-- package the visualweb cluster into a zip file -->
+        <delete file="${rave.zip.dest}/RAVE-vw-${buildnumber}.zip"/>
+
+        <zip destfile="${rave.zip.dest}/RAVE-vw-${buildnumber}.zip" update="true" duplicate="preserve">
+		    <zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${rave.zip.prefix}"/>
+        </zip>
+        <echo>Build created; see RAVE-vw-${buildnumber}.zip (in ravebuild/). </echo>
+
+		<!-- package the whole IDE + visualweb cluster into a zip file -->
+		<delete file="${rave.zip.dest}/RAVE-ide-${buildnumber}.zip"/>
+
+        <zip destfile="${rave.zip.dest}/RAVE-ide-${buildnumber}.zip" update="true" duplicate="preserve">
+			<zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
+			<zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform7/lib"/>
+			<zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
                 <include name="*.sh"/>
             </zipfileset>
             <zipfileset dir="${netbeans.dest.dir}" prefix="${rave.zip.prefix}">
                 <exclude name="*.built" />
-            </zipfileset> -->
-		    <zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${rave.zip.prefix}"/>
-        </zip>
-        <echo>Build created; see RAVE-${buildnum}.zip (in ravebuild/).
-If you like, you may run the IDE straight from
-the ${netbeans.dest.dir}/bin/ directory.
-(For example, type: ant tryme)
-        </echo>
+            </zipfileset>
+			<zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${rave.zip.prefix}"/>
+        </zip> 
+        <echo>Build created; see RAVE-ide-${buildnumber}.zip (in ravebuild/). </echo>
     </target>
-    
     
     <!-- Overriding build-nbms target.
     Reason: adding deletion of nbms dir -->
