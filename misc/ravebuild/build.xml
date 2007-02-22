@@ -364,15 +364,15 @@ Visual Web top level build script.
 		<delete file="${rave.zip.dest}/RAVE-ide-${buildnumber}.zip"/>
 
         <zip destfile="${rave.zip.dest}/RAVE-ide-${buildnumber}.zip" update="true" duplicate="preserve">
-			<zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${rave.zip.prefix}/bin"/>
-			<zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${rave.zip.prefix}/platform7/lib"/>
-			<zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${rave.zip.prefix}">
+			<zipfileset file="${netbeans.dest.dir}/bin/netbeans" filemode="755" prefix="${nb.zip.prefix}/bin"/>
+			<zipfileset file="${netbeans.dest.dir}/platform7/lib/nbexec" filemode="755" prefix="${nb.zip.prefix}/platform7/lib"/>
+			<zipfileset file="${netbeans.dest.dir}" filemode="755" prefix="${nb.zip.prefix}">
                 <include name="*.sh"/>
             </zipfileset>
-            <zipfileset dir="${netbeans.dest.dir}" prefix="${rave.zip.prefix}">
+            <zipfileset dir="${netbeans.dest.dir}" prefix="${nb.zip.prefix}">
                 <exclude name="*.built" />
             </zipfileset>
-			<zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${rave.zip.prefix}"/>
+			<zipfileset dir="${netbeans.dest.dir}/${rave.zip.prefix}" prefix="${nb.zip.prefix}"/>
         </zip> 
         <echo>Build created; see RAVE-ide-${buildnumber}.zip (in ravebuild/). </echo>
     </target>
