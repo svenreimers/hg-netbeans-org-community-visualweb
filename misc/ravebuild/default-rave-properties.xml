@@ -81,7 +81,7 @@ Microsystems, Inc. All Rights Reserved.
   <property name="as.solsparc" value="glassfish-installer-sol-sparc-v1_ur1-b14.jar"/>
   <property name="as.solx86" value="glassfish-installer-sol-x86-v1_ur1-b14.jar"/>
   <property name="as.win" value="glassfish-installer-windows-v1_ur1-b14.jar"/>
-  <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v1ur1/PE/b14"/>
+  <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v9.0/PE/v1ur1/b14"/>
 
   <property name="jdk.cache.dir" location="${cache.dir}/JDKzip"/>
   <property name="jdk.linux" value="j2sdk-1.5.0_06-linux"/>
