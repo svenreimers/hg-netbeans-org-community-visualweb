@@ -1,0 +1,33 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<!--
+-->
+<project name="Mobility Build" default="build" basedir=".">
+    <property name="build.sysclasspath" value="ignore"/>
+
+    <target name="build">
+        <subant target="build" inheritAll="false" buildpath="visualwebsuite">
+	    <property name="scan.binaries" value="true"/>
+	    <property name="nbplatform.Rave.netbeans.dest.dir" location="../nbbuild/netbeans"/>
+	    <property name="nbplatform.Rave.harness.dir" location="../nbbuild/netbeans/harness"/>
+	    <property name="cluster" location="../nbbuild/netbeans/visualweb1"/>
+	    <property name="cluster.location" location="../nbbuild/netbeans/visualweb1"/>
+        </subant>
+    </target>
+
+    <target name="build-zip" depends="build">
+        <mkdir dir="dist"/>
+        <zip destfile="dist/visualweb1.zip">
+            <zipfileset dir="${nb_all}/nbbuild/netbeans/visualweb1" prefix="visualweb1"/>
+        </zip>
+    </target>
+
+    <target name="clean">
+        <subant target="clean" inheritAll="false" buildpath="visualwebsuite">
+            <property name="scan.binaries" value="true"/>
+	    <property name="nbplatform.Rave.netbeans.dest.dir" location="../nbbuild/netbeans"/>
+	    <property name="nbplatform.Rave.harness.dir" location="../nbbuild/netbeans/harness"/>
+	    <property name="cluster" location="../nbbuild/netbeans/visualweb1"/>
+	    <property name="cluster.location" location="../nbbuild/netbeans/visualweb1"/>
+        </subant>
+    </target>
+</project>
