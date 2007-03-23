@@ -95,13 +95,12 @@ Visual Web top level build script.
 
     <target name="prepare-netbeans-dest-dir" depends="-check-netbeans-copy, init"
         unless="skip.netbeans.copy">
-        <mkdir dir="${netbeans.dest.dir}"/>
+        <!-- mkdir dir="${netbeans.dest.dir}"/>
         <copy overwrite="true" todir="${netbeans.dest.dir}">
             <fileset dir="${netbeans.dir}" includes="**"/>
         </copy>
         <chmod perm="755" file="${netbeans.dest.dir}/bin/netbeans"/>
-        <property name="cluster.location" location="${netbeans.dest.dir}/visualweb1"/>
-        <echo append="true" file="${netbeans.dest.dir}/etc/netbeans.clusters">visualweb1${line.separator}</echo>
+        -->
     </target>
     
     <target name="build-netbeans" depends="-check-netbeans-build,init"
@@ -204,7 +203,7 @@ Visual Web top level build script.
     
     <target name="build" depends="prepare-netbeans-dest-dir, copy-jdk" description="Build the IDE, run basic validation tests, and start the IDE">
         <ant antfile="../visualwebsuite/build.xml" target="build" inheritall="false"/>
-        <echo file="${basedir}/rave/visualweb1/build-number">${buildnumber}</echo>
+        <echo file="${netbeans.dest.dir}/visualweb1/build-number">${buildnumber}</echo>
         <!-- ant antfile="../idesuite/build.xml" target="build" inheritall="false"/ -->
         <!-- echo file="${basedir}/rave/raveide2.0/build-number">${buildnumber}</echo -->
     </target>
@@ -218,7 +217,7 @@ Visual Web top level build script.
     -->
     
     <target name="-suite-clean">
-        <available file="${basedir}/rave/harness/suite.xml" property="harness.available"/>
+        <available file="${netbeans.dest.dir}/harness/suite.xml" property="harness.available"/>
     </target>
     
     <target name="suite-clean" depends="init, -suite-clean" description="Cleans the module suite only" if="harness.available">
@@ -227,6 +226,7 @@ Visual Web top level build script.
     </target>
     
     <target name="ravebuild-clean">
+        <delete dir="${netbeans.dest.dir}/visualweb1"/>
         <delete dir="build"/>
         <delete file="raveantext.jar" failonerror="false" deleteonexit="true"/>
     </target>
@@ -499,6 +499,7 @@ Visual Web top level build script.
     </target>
 
     <target name="copy-jdk" depends="copy-env1" unless="noJdkCopy">
+        <!--
         <copy toDir="${jdkhome}">
             <fileset dir="${shipJdkHome}">
                 <include name="COPYRIGHT"/>
@@ -518,6 +519,7 @@ Visual Web top level build script.
                 <include name="**/bin/*"/>
             </fileset>
         </chmod>
+        -->
     </target>
 
     <!-- Helper targets for building individual modules, this replaces the individual scripts -->
@@ -1066,6 +1068,10 @@ Visual Web top level build script.
     </target>
 
     <target name="-unzip-netbeans-bin" depends="-get-netbeans-bin, init">
+        <echo> nb.bin.base = ${nb.bin.base} </echo> 
+        <echo> nb.bin.dir = ${nb.bin.dir} </echo> 
+        <echo> nb.src.base = ${nb.src.base} </echo> 
+        <echo> nb.src.dir = ${nb.src.dir} </echo> 
         <mkdir dir="${nb.bin.base}"/>
         <!-- use exec to avoid the file permission preservation issue in ant -->
 	<delete dir="${nb.bin.dir}" failonerror="false"/>
@@ -1205,7 +1211,7 @@ Visual Web top level build script.
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
         <ant dir="../../installer/nb_installer/creator" target="build">
-            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="cluster.dir" location="../../nbbuild/netbeans/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
 	    <property name="installer.suffix" value="${installer.suffix}"/>
@@ -1233,7 +1239,7 @@ Visual Web top level build script.
         <echo> Installer installation dir is: ${myenv.ISMP}</echo>
         <!-- ant dir="${nb_all.dir}/installer/profiler" target="build" -->
         <ant dir="../../installer/nb_installer/creator" target="build-cn">
-            <property name="cluster.dir" location="rave/visualweb1"/>
+            <property name="cluster.dir" location="netbeans/visualweb1"/>
             <property name="ismp.home" location="${myenv.ISMP}"/>
             <property name="installer.basename" value="${installer.basename}"/>
 	    <property name="installer.suffix" value="${installer.suffix}"/>

@@ -22,8 +22,8 @@ Microsystems, Inc. All Rights Reserved.
 
   <dirname property="rave_all" file="${ant.file.default-rave-properties}/.."/>
   
-  <property name="netbeans.dest.dir" location="${rave_all}/ravebuild/rave"/>
-  <property name="netbeans.location" location="${rave_all}/ravebuild/netbeans"/>
+  <property name="netbeans.dest.dir" location="${rave_all}/../nbbuild/netbeans"/>
+  <property name="netbeans.location" location="${netbeans.dest.dir}"/>
   
   <!-- setting dest and prefix for zip file -->
   <property name="rave.zip.dest" location="${rave_all}/ravebuild"/>
@@ -61,8 +61,8 @@ Microsystems, Inc. All Rights Reserved.
   <property name="nb.solx86.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-solaris-x86-${ml.nb.name.suffix}-${ml.nb.name.part3}.bin"/>
   <property name="nb.win.ml" value="${ml.nb.name.part1}-bin-${ml.nb.name.part2}-windows-${ml.nb.name.suffix}-${ml.nb.name.part3}.exe"/>
 
-  <property name="nb.bin.base" location="${rave_all}/ravebuild"/>
-  <property name="nb.src.base" location="${rave_all}/ravebuild"/>
+  <property name="nb.bin.base" location="${rave_all}/../nbbuild"/>
+  <property name="nb.src.base" location="${rave_all}/../nbbuild"/>
   <property name="nb.bin.dir" location="${nb.bin.base}/netbeans"/>
   <property name="nb.src.dir" location="${nb.src.base}/netbeans-src"/>
   <property name="nb.forked.modules.dir" location="${rave_all}"/>
