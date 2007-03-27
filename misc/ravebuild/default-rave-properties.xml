@@ -85,7 +85,7 @@ Microsystems, Inc. All Rights Reserved.
   <property name="as.win" value="glassfish-installer-windows-${as.version}.jar"/>
   <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v9.0/PE/${as.relative.path}"/>
 
-  <<property name="jdk.version" value="1.5.0_06"/>
+  <property name="jdk.version" value="1.5.0_06"/>
   <property name="jdk.cache.dir" location="${cache.dir}/JDKzip"/>
   <property name="jdk.linux" value="j2sdk-${jdk.version}-linux"/>
   <property name="jdk.solsparc" value="j2sdk-${jdk.version}-solsparc"/>
