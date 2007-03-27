@@ -75,19 +75,22 @@ Microsystems, Inc. All Rights Reserved.
   <property name="ismp.cache.server.url" value="http://clue.sfbay.sun.com/kits2/installs/ismp/XI"/>
 
   <!-- properties related to glassfish -->
+  <property name="as.version" value="v2-b33"/>
+  <property name="as.relative.path" value="v2/b33"/>
   <property name="as.cache.dir" location="${cache.dir}/SunAppServer"/>
-  <property name="as.linux" value="glassfish-installer-linux-v1_ur1-b14.jar"/>
-  <property name="as.mac" value="glassfish-installer-mac-v1_ur1-b14.jar"/>
-  <property name="as.solsparc" value="glassfish-installer-sol-sparc-v1_ur1-b14.jar"/>
-  <property name="as.solx86" value="glassfish-installer-sol-x86-v1_ur1-b14.jar"/>
-  <property name="as.win" value="glassfish-installer-windows-v1_ur1-b14.jar"/>
-  <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v9.0/PE/v1ur1/b14"/>
+  <property name="as.linux" value="glassfish-installer-linux-${as.version}.jar"/>
+  <property name="as.mac" value="glassfish-installer-mac-${as.version}.jar"/>
+  <property name="as.solsparc" value="glassfish-installer-sol-sparc-${as.version}.jar"/>
+  <property name="as.solx86" value="glassfish-installer-sol-x86-${as.version}.jar"/>
+  <property name="as.win" value="glassfish-installer-windows-${as.version}.jar"/>
+  <property name="as.cache.server.url" value="http://balui.sfbay.sun.com/cache/SunAppServer/v9.0/PE/${as.relative.path}"/>
 
+  <<property name="jdk.version" value="1.5.0_06"/>
   <property name="jdk.cache.dir" location="${cache.dir}/JDKzip"/>
-  <property name="jdk.linux" value="j2sdk-1.5.0_06-linux"/>
-  <property name="jdk.solsparc" value="j2sdk-1.5.0_06-solsparc"/>
-  <property name="jdk.solx86" value="j2sdk-1.5.0_06-solx86"/>
-  <property name="jdk.win" value="j2sdk-1.5.0_06-nt"/>
-  <property name="jdk.cache.server.url" value="http://balui.sfbay.sun.com/cache/j2se/1.5.0_06"/>
+  <property name="jdk.linux" value="j2sdk-${jdk.version}-linux"/>
+  <property name="jdk.solsparc" value="j2sdk-${jdk.version}-solsparc"/>
+  <property name="jdk.solx86" value="j2sdk-${jdk.version}-solx86"/>
+  <property name="jdk.win" value="j2sdk-${jdk.version}-nt"/>
+  <property name="jdk.cache.server.url" value="http://balui.sfbay.sun.com/cache/j2se/${jdk.version}"/>
 
 </project>
