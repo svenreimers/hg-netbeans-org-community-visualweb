@@ -1257,5 +1257,79 @@ Visual Web top level build script.
             <property name="installer.suffix" value="${installer.suffix}"/>
         </ant>
     </target>
+    
+    <target name="commit-validation" 
+            depends="commitValidation, no-commit-validation, no-test-properties"
+            description="Runs tests to validate IDE before commit."
+    />
+    
+    <target name="commitValidation" depends="check-commit-validation" if="run.validation">
+        <property name="xtest.home" location="../../xtest"/>
+        <ant dir="../gravy" target="clean"/>
+        <!--exec dir="${basedir}/../gravy" executable="ant" failonerror="yes"/-->
+        <ant dir="../../jemmy" target="jar"/>
+        <ant dir="${basedir}/../gravy" target="jar">
+            <property name="no.deps" value="true"/>
+            <property name="java.version.excludes" location="${basedir}/../../jemmy/util/${ant.java.version}.excludes"/>
+        </ant>    
+        <ant dir="../test" target="sanitytests">
+            <property name="jdkhome" value="${env.JAVA_HOME}"/>
+            <property name="netbeans.dest.dir" location="../../nbbuild/netbeans"/>
+        </ant>
+    </target>        
+    <target name="check-commit-validation">
+        <condition property="run.validation">
+            <and>
+                <available file="../test/build.xml"/>
+                <available file="../gravy/build.xml"/>
+                <available file="../../jemmy/build.xml"/>
+                <available file="../../jellytools/build.xml"/>
+                <available file="../../xtest/build.xml"/>
+                <available file="../../testtools/external/httpunit/httpunit.jar"/>
+            </and>
+        </condition>
+    </target>
+    
+    <target name="check-test-properties">
+        <condition property="have.properties">
+            <available file="../test/data/DefaultDeploymentTargets.properties"/>
+        </condition>
+    </target>
+    
+    <target name="no-test-properties" depends="check-test-properties" unless="have.properties">
+        <fail>
+            visualweb/test/data/DefaultDeploymentTargets.properties is absent. 
+            Copy DefaultDeploymentTargets.properties.template to DefaultDeploymeye ntTargets.properties
+            and edit it manally, set location af Glassfish Application Server
+        </fail>
+    </target>
+    
+    <target name="no-commit-validation" depends="check-commit-validation" unless="run.validation">
+        <echo>
+            *** WARNING ***
+            You do not seem to have the modules needed to run the commit validation test suite. 
+            You may not commit any changes into the CVS repository without running these tests.
+            For more information: http://www.netbeans.org/community/guidelines/commit.html
+            
+            Run checkout-test-tools target to get necessary modules from cvs repository
+        </echo>
+    </target>
+    
+    <target name="build-test-tools" depends="checkout-test-tools">
+        <ant dir="../../xtest" target="makedist-simple">
+           <property name="netbeans.dest.dir" value="${basedir}/../../nbbuild/netbeans"/>
+        </ant>
+        <!--ant dir="${basedir}/../../jellytools">
+           <property name="netbeans.dest.dir" value="${basedir}/../../nbbuild/netbeans"/>
+        </ant-->
+        <ant dir="${basedir}/../../jemmy"/>
+    </target>
+
+    <target name="checkout-test-tools" depends="check-commit-validation" unless="run.validation">
+        <property name="cvsroot" value=":pserver:anoncvs@cvs.netbeans.org:/cvs"/>
+        <cvs command="checkout -P" compressionlevel="6" cvsroot="${cvsroot}" dest="../.." 
+            package="testtools/external jemmy jellytools xtest core/external nbbuild junit/external" 
+            quiet="true" failonerror="true"/>
+    </target>    
 </project>
 
