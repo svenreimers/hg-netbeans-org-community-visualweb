@@ -1273,7 +1273,7 @@ Visual Web top level build script.
             <property name="java.version.excludes" location="${basedir}/../../jemmy/util/${ant.java.version}.excludes"/>
         </ant>    
         <ant dir="../test" target="sanitytests">
-            <property name="jdkhome" value="${env.JAVA_HOME}"/>
+            <property name="jdkhome" value="${java.home}"/>
             <property name="netbeans.dest.dir" location="../../nbbuild/netbeans"/>
         </ant>
     </target>        
@@ -1326,7 +1326,8 @@ Visual Web top level build script.
     </target>
 
     <target name="checkout-test-tools" depends="check-commit-validation" unless="run.validation">
-        <property name="cvsroot" value=":pserver:anoncvs@cvs.netbeans.org:/cvs"/>
+        <!--property name="cvsroot" value=":pserver:anoncvs@cvs.netbeans.org:/cvs"/-->
+        <property name="cvsroot" value="${env.CVSROOT}"/>
         <cvs command="checkout -P" compressionlevel="6" cvsroot="${cvsroot}" dest="../.." 
             package="testtools/external jemmy jellytools xtest core/external nbbuild junit/external" 
             quiet="true" failonerror="true"/>
