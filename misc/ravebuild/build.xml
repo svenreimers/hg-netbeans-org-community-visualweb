@@ -1273,7 +1273,7 @@ Visual Web top level build script.
             <property name="java.version.excludes" location="${basedir}/../../jemmy/util/${ant.java.version}.excludes"/>
         </ant>    
         <ant dir="../test" target="sanitytests">
-            <property name="jdkhome" value="${java.home}"/>
+            <property name="jdkhome" value="${env.JAVA_HOME}"/>
             <property name="netbeans.dest.dir" location="../../nbbuild/netbeans"/>
         </ant>
     </target>        
