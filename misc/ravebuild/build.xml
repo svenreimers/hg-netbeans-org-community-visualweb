@@ -1258,9 +1258,20 @@ Visual Web top level build script.
         </ant>
     </target>
     
+    <target name="set-commit-validation-target">
+        <property name="commit.validation.target" value="sanitytests"/> 
+    </target>
+    <target name="set-simple-commit-validation-target">
+        <property name="commit.validation.target" value="simple-commit-validation"/> 
+    </target>
     <target name="commit-validation" 
-            depends="commitValidation, no-commit-validation, no-test-properties"
+            depends="set-commit-validation-target,commitValidation, no-commit-validation, no-test-properties"
             description="Runs tests to validate IDE before commit."
+    />
+
+    <target name="simple-commit-validation"
+            depends="set-simple-commit-validation-target,commitValidation, no-commit-validation"
+            description="Runs tests to validate IDE before commit (Simple validation)."
     />
     
     <target name="commitValidation" depends="check-commit-validation" if="run.validation">
@@ -1272,7 +1283,7 @@ Visual Web top level build script.
             <property name="no.deps" value="true"/>
             <property name="java.version.excludes" location="${basedir}/../../jemmy/util/${ant.java.version}.excludes"/>
         </ant>    
-        <ant dir="../test" target="sanitytests">
+        <ant dir="../test" target="${commit.validation.target}">
             <property name="jdkhome" value="${env.JAVA_HOME}"/>
             <property name="netbeans.dest.dir" location="../../nbbuild/netbeans"/>
         </ant>
