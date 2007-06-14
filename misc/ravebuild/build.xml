@@ -855,6 +855,9 @@ Visual Web top level build script.
     <target name="registration">
         <ant dir="../registration" target="${target}"/>
     </target>
+    <target name="rowset">
+        <ant dir="../rowset" target="${target}"/>
+    </target>
     <target name="servernav">
         <ant dir="../servernav" target="${target}"/>
     </target>
