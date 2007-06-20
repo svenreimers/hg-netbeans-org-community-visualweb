@@ -4,7 +4,7 @@
     <configuration>
         <general-data xmlns="http://www.netbeans.org/ns/freeform-project/1">
             <!-- Do not use Project Properties customizer when editing this file manually. -->
-            <name>Visul Web Pack Build</name>
+            <name>Visual Web Pack Build</name>
             <properties/>
             <ide-actions>
                 <action name="build">
