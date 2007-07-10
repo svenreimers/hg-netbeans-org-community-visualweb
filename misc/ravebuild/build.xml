@@ -1299,7 +1299,7 @@ Visual Web top level build script.
                 <available file="../../jemmy/build.xml"/>
                 <available file="../../jellytools/build.xml"/>
                 <available file="../../xtest/build.xml"/>
-                <available file="../../testtools/external/httpunit/httpunit.jar"/>
+                <available file="../../testtools/external/httpunit.jar"/>
             </and>
         </condition>
     </target>
