@@ -1343,7 +1343,7 @@ Visual Web top level build script.
         <!--property name="cvsroot" value=":pserver:anoncvs@cvs.netbeans.org:/cvs"/-->
         <property name="cvsroot" value="${env.CVSROOT}"/>
         <cvs command="checkout -P" compressionlevel="6" cvsroot="${cvsroot}" dest="../.." 
-            package="testtools/external jemmy jellytools xtest core/external nbbuild junit/external" 
+            package="testtools/external jemmy jellytools xtest core/javahelp/external nbbuild junit/external" 
             quiet="true" failonerror="true"/>
     </target>    
 </project>
