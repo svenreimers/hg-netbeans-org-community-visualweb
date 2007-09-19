@@ -1290,6 +1290,7 @@ Visual Web top level build script.
             <property name="jdkhome" value="${env.JAVA_HOME}"/>
             <property name="netbeans.dest.dir" location="../../nbbuild/netbeans"/>
         </ant>
+        <delete dir="../../nbbuild/netbeans/extra"/> <!-- #114661 -->
     </target>        
     <target name="check-commit-validation">
         <condition property="run.validation">
