@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -77,6 +80,7 @@ import org.openide.util.datatransfer.ExTransferable;
  *
  * @author quynguyen
  */
+@org.openide.util.lookup.ServiceProvider(service=org.netbeans.modules.websvc.saas.spi.ConsumerFlavorProvider.class)
 public class DesignerWebServiceTransferManager implements ConsumerFlavorProvider {
     static DataFlavor FLAVOR_METHOD_DISPLAY_ITEM;
     static DataFlavor FLAVOR_PORT_DISPLAY_ITEM;
@@ -108,24 +112,27 @@ public class DesignerWebServiceTransferManager implements ConsumerFlavorProvider
                 Object data = transferable.getTransferData(ConsumerFlavorProvider.WSDL_METHOD_FLAVOR);
                 if (data instanceof WsdlSaasMethod) {
                     final WsdlSaasMethod method = (WsdlSaasMethod) data;
-                    final JavaMethod javaMethod = (JavaMethod) method.getJavaMethod().getInternalJAXWSJavaMethod();
-                    if (javaMethod != null && !Util.hasOutput(javaMethod)) { // NOI18N
-                        result.put(new ExTransferable.Single(FLAVOR_PORT_DISPLAY_ITEM) {
-                            protected Object getData() throws IOException, UnsupportedFlavorException {
-                                return new PortBeanCreateInfo(
-                                        (WebServiceData) method.getSaas().getWsdlData(),(WsdlPort) method.getWsdlPort());
+                    if(method.getJavaMethod() != null &&
+                            method.getJavaMethod().getInternalJAXWSJavaMethod() instanceof JavaMethod) {
+                        final JavaMethod javaMethod = (JavaMethod) method.getJavaMethod().getInternalJAXWSJavaMethod();
+                        if (javaMethod != null && !Util.hasOutput(javaMethod)) { // NOI18N
+                            result.put(new ExTransferable.Single(FLAVOR_PORT_DISPLAY_ITEM) {
+                                protected Object getData() throws IOException, UnsupportedFlavorException {
+                                    return new PortBeanCreateInfo(
+                                            (WebServiceData) method.getSaas().getWsdlData(),(WsdlPort) method.getWsdlPort());
+                                }
+                            });
+                        } else {
+                            result.put(new ExTransferable.Single(FLAVOR_METHOD_DISPLAY_ITEM) {
+                                protected Object getData() throws IOException, UnsupportedFlavorException {
+                                    return new MethodBeanCreateInfo(
+                                        (WebServiceData) method.getSaas().getWsdlData(),(WsdlPort) method.getWsdlPort(),
+                                        javaMethod);
                             }
-                        });
-                    } else {
-                        result.put(new ExTransferable.Single(FLAVOR_METHOD_DISPLAY_ITEM) {
-                            protected Object getData() throws IOException, UnsupportedFlavorException {
-                                return new MethodBeanCreateInfo(
-                                    (WebServiceData) method.getSaas().getWsdlData(),(WsdlPort) method.getWsdlPort(),
-                                    javaMethod);
-                        }  
-                        });
+                            });
+                        }
+                        return result;
                     }
-                    return result;
                 }
             } else if (transferable.isDataFlavorSupported(ConsumerFlavorProvider.PORT_FLAVOR) &&
                       !transferable.isDataFlavorSupported(FLAVOR_PORT_DISPLAY_ITEM)) {

@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -41,6 +44,8 @@
 
 package org.netbeans.modules.visualweb.insync.faces.refactoring;
 
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import org.netbeans.modules.visualweb.insync.faces.ElAttrUpdater;
 import org.netbeans.modules.visualweb.insync.markup.MarkupUnit;
 import org.netbeans.modules.visualweb.insync.markup.MarkupVisitor;
@@ -82,6 +87,11 @@ public class RenameElExpressionReferencesRefactoringElement extends MarkupRefact
 
     public void performChange() {
         Document document = markupUnit.getSourceDom();
+        if (document == null) {
+            // XXX #107723 NPE.
+            log(new NullPointerException("There is null source document for markup unit, markupUnit=" + markupUnit)); // NOI18N
+            return;
+        }
         MarkupVisitor v = new ElAttrUpdater(oldName, newName);
         v.apply(document);
         markupUnit.flush();        
@@ -90,10 +100,19 @@ public class RenameElExpressionReferencesRefactoringElement extends MarkupRefact
     @Override
     public void undoChange() {
         Document document = markupUnit.getSourceDom();
+        if (document == null) {
+            // XXX #107723 NPE.
+            log(new NullPointerException("There is null source document for markup unit, markupUnit=" + markupUnit)); // NOI18N
+            return;
+        }
         MarkupVisitor v = new ElAttrUpdater(newName, oldName);
         v.apply(document);
         markupUnit.flush();        
     }
-    
+
+
+    private static void log(Exception ex) {
+        Logger.getLogger(RenameElExpressionReferencesRefactoringElement.class.getName()).log(Level.INFO, null, ex);
+    }
     
 }

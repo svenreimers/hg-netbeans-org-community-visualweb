@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -60,6 +63,7 @@ import org.netbeans.modules.visualweb.propertyeditors.util.Bundle;
 import com.sun.data.provider.DataProvider;
 import com.sun.rave.designtime.DesignProject;
 import com.sun.rave.designtime.faces.FacesDesignProject;
+import org.openide.awt.Mnemonics;
 
 public class TabbedDataBindingPanel extends DataBindingPanel implements BindingTargetCallback {
 
@@ -105,7 +109,6 @@ public class TabbedDataBindingPanel extends DataBindingPanel implements BindingT
         // find the current value
         valueTextField.setText(prop.getValueSource());
         valueLabel.setLabelFor(valueTextField);
-        valueLabel.setDisplayedMnemonic(bundle.getMessage("VALUE_EXP_DISPLAYED_MNEMONIC").charAt(0));
         valueTextField.getAccessibleContext().setAccessibleName(bundle.getMessage("VALUE_EXP_ACCESS_NAME"));
         valueTextField.getAccessibleContext().setAccessibleDescription(bundle.getMessage("VALUE_EXP_ACCESS_DESC"));
 
@@ -127,7 +130,7 @@ public class TabbedDataBindingPanel extends DataBindingPanel implements BindingT
         this.setLayout(gridBagLayout1);
         String lbl_current = bundle.getMessage("LBL_Current");
         String lbl_setting = bundle.getMessage("LBL_Setting");
-        valueLabel.setText(lbl_current + " " + designProperty.getPropertyDescriptor().getDisplayName() + " " + lbl_setting); //NOI18N
+        Mnemonics.setLocalizedText(valueLabel, lbl_current + " " + designProperty.getPropertyDescriptor().getDisplayName() + " " + lbl_setting); // NOI18N
         if (showExpr && bindingPanels.size() > 0) {
             this.add(valueLabel,
                     new GridBagConstraints(0, 0, 1, 1, 1.0, 0.0, GridBagConstraints.CENTER,

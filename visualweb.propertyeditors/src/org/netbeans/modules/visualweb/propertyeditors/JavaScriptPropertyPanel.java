@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -51,6 +54,8 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.JTextArea;
 import javax.swing.UIManager;
+import org.openide.awt.Mnemonics;
+import org.openide.util.NbBundle;
 
 /**
  * A custom property editor for JavaScript, that displays code using basic
@@ -60,10 +65,6 @@ import javax.swing.UIManager;
  * @author gjmurphy
  */
 public class JavaScriptPropertyPanel extends PropertyPanelBase {
-
-    private static String instructions =
-            ResourceBundle.getBundle("org.netbeans.modules.visualweb.propertyeditors.Bundle").getString(
-                "JavaScriptPropertyPanel.instructions");
 
     protected static Class codeClipsPanelClass;
     protected JEditorPane editorPane;
@@ -80,7 +81,7 @@ public class JavaScriptPropertyPanel extends PropertyPanelBase {
      */
     public JavaScriptPropertyPanel(JavaScriptPropertyEditor propertyEditor) {
         super(propertyEditor);
-        initComponents((String) propertyEditor.getValue(), instructions);
+        initComponents((String) propertyEditor.getValue());
     }
 
     protected JPanel getNewCodeClipsPanel() {
@@ -110,13 +111,13 @@ public class JavaScriptPropertyPanel extends PropertyPanelBase {
 //        }
 //    }
 
-    protected void initComponents(String string, String instructions) {
+    protected void initComponents(String string) {
         GridBagConstraints gridBagConstraints;
         setLayout(new java.awt.GridBagLayout());
         // Label with instructions
-        final JLabel label = new JLabel(instructions);
+        final JLabel label = new JLabel();
+        Mnemonics.setLocalizedText(label, NbBundle.getMessage(JavaScriptPropertyPanel.class, "JavaScriptPropertyPanel.instructions"));
         label.setFont(getFont());
-        label.setDisplayedMnemonic(ResourceBundle.getBundle("org.netbeans.modules.visualweb.propertyeditors.Bundle").getString("JavaScriptPropertyPanel.label.mnemonic").charAt(0));
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 1;
         gridBagConstraints.gridy = 0;

@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -204,7 +207,7 @@ public class BackgroundStyleEditor extends StyleEditor implements PropertyChange
         setBackgroundColor();
     }
     
-    // <editor-fold defaultstate="collapsed" desc=" Generated Code ">//GEN-BEGIN:initComponents
+    // <editor-fold defaultstate="collapsed" desc="Generated Code">//GEN-BEGIN:initComponents
     private void initComponents() {
         java.awt.GridBagConstraints gridBagConstraints;
 
@@ -282,9 +285,8 @@ public class BackgroundStyleEditor extends StyleEditor implements PropertyChange
         colorPanel.add(imageFileField, gridBagConstraints);
         imageFileField.getAccessibleContext().setAccessibleDescription(org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BG_IMAGE_FIELD_ACCESS_DESC")); // NOI18N
 
-        lineHeightLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/propertyeditors/css/Bundle").getString("BACKGROUND_IMAGE_MNEMONIC").charAt(0));
         lineHeightLabel.setLabelFor(imageFileField);
-        lineHeightLabel.setText(org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUND_IMAGE")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(lineHeightLabel, org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUND_IMAGE")); // NOI18N
         lineHeightLabel.setVerticalAlignment(javax.swing.SwingConstants.TOP);
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
@@ -293,9 +295,8 @@ public class BackgroundStyleEditor extends StyleEditor implements PropertyChange
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 10);
         colorPanel.add(lineHeightLabel, gridBagConstraints);
 
-        imageTileLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/propertyeditors/css/Bundle").getString("BACKGROUNDTILE_MNEMONIC").charAt(0));
         imageTileLabel.setLabelFor(repeatComboBox);
-        imageTileLabel.setText(org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUNDTILE")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(imageTileLabel, org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUNDTILE")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -303,9 +304,8 @@ public class BackgroundStyleEditor extends StyleEditor implements PropertyChange
         gridBagConstraints.insets = new java.awt.Insets(5, 0, 0, 10);
         colorPanel.add(imageTileLabel, gridBagConstraints);
 
-        imageScrollLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/propertyeditors/css/Bundle").getString("BACKGROUND_SCROLL_MNEMONIC").charAt(0));
         imageScrollLabel.setLabelFor(scrollComboBox);
-        imageScrollLabel.setText(org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUND_SCROLL")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(imageScrollLabel, org.openide.util.NbBundle.getMessage(BackgroundStyleEditor.class, "BACKGROUND_SCROLL")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;

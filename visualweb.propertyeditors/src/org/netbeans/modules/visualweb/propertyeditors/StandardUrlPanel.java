@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -92,6 +95,7 @@ import java.util.ResourceBundle;
 import org.openide.explorer.propertysheet.editors.EnhancedCustomPropertyEditor;
 import org.openide.nodes.Node;
 import org.openide.ErrorManager;
+import org.openide.awt.Mnemonics;
 
 /**
  * @deprecated
@@ -116,9 +120,8 @@ public class StandardUrlPanel extends JPanel implements PropertyChangeListener, 
     GridBagLayout gridBagLayout1 = new GridBagLayout();
     JLabel valueLabel = new JLabel();
 
-    JRadioButton copyButton = new JRadioButton(bundle.getString("copy")); //NOI18N
-    JRadioButton linkButton = new JRadioButton(bundle.getString("link")); //NOI18N
-    
+    JRadioButton copyButton = new JRadioButton();
+    JRadioButton linkButton = new JRadioButton();
 
     ButtonGroup group = new ButtonGroup();
 
@@ -143,11 +146,11 @@ public class StandardUrlPanel extends JPanel implements PropertyChangeListener, 
 
     public StandardUrlPanel() {
         try {
+            Mnemonics.setLocalizedText(copyButton, bundle.getString("copy"));
+            Mnemonics.setLocalizedText(linkButton, bundle.getString("link"));
             jbInit();
             copyButton.getAccessibleContext().setAccessibleDescription(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "COPY_BUTTON_ACCESS_DESC"));
             linkButton.getAccessibleContext().setAccessibleDescription(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "LINK_BUTTON_ACCESS_DESC"));
-            copyButton.setMnemonic(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "COPY_BUTTON_MNEMONIC").charAt(0));
-            linkButton.setMnemonic(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "LINK_BUTTON_MNEMONIC").charAt(0));
             valueTextField.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "VALUE_TEXTFIELD_ACCESS_NAME"));
             valueTextField.getAccessibleContext().setAccessibleDescription(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "VALUE_TEXTFIELD_ACCESS_DESC"));
             tabs.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(StandardUrlPanel.class, "TAB_PANE_ACCESS_NAME"));

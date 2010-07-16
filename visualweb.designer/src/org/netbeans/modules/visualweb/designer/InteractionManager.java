@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -713,12 +716,17 @@ public class InteractionManager {
     int updateDropState(Point p, boolean committed, Transferable transferable) {
         DesignerPane pane = webform.getPane();
 //        CssBox box = webform.getMapper().findBox(p.x, p.y);
-        CssBox box = ModelViewMapper.findBox(pane.getPageBox(), p.x, p.y);
+        PageBox pageBox = pane.getPageBox();
+        if (pageBox == null) {
+            // XXX #152692 Possible NPE.
+            return DndHandler.DROP_DENIED;
+        }
+        CssBox box = ModelViewMapper.findBox(pageBox, p.x, p.y);
         CssBox insertBox = findInsertBox(box);
 
 //        if ((insertBox == pane.getPageBox()) && webform.getDocument().isGridMode()) {
 //        if ((insertBox == pane.getPageBox()) && webform.isGridModeDocument()) {
-        if ((insertBox == pane.getPageBox()) && webform.isGridMode()) {
+        if ((insertBox == pageBox) && webform.isGridMode()) {
             insertBox = null;
         }
 
@@ -1829,6 +1837,10 @@ public class InteractionManager {
             int y = p.y;
             SelectionManager sm = webform.getSelection();
             PageBox pageBox = pane.getPageBox();
+            if (pageBox == null) {
+                // XXX #152693 Possible NPE.
+                return;
+            }
             int maxWidth = pageBox.getWidth();
             int maxHeight = pageBox.getHeight();
             int resize = sm.getSelectionHandleDir(x, y, maxWidth, maxHeight);

@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -80,6 +83,7 @@ import com.sun.rave.designtime.DesignContext;
 import com.sun.rave.designtime.DesignProperty;
 import com.sun.rave.designtime.markup.AttributeDescriptor;
 import org.netbeans.modules.visualweb.propertyeditors.util.Bundle;
+import org.openide.awt.Mnemonics;
 
 public class BindingSourcePanel extends JPanel {
 
@@ -117,9 +121,6 @@ public class BindingSourcePanel extends JPanel {
         showAdvanced.getAccessibleContext().setAccessibleDescription(bundle.getMessage("SHOW_ADVANCED_ACCESS_DESC"));
         showAll.getAccessibleContext().setAccessibleName(bundle.getMessage("SHOW_ALL_ACCESS_NAME"));
         showAll.getAccessibleContext().setAccessibleDescription(bundle.getMessage("SHOW_ALL_ACCESS_DESC"));
-        showDefault.setMnemonic(bundle.getMessage("SHOW_DEFAULT_MNEMONIC").charAt(0));
-        showAdvanced.setMnemonic(bundle.getMessage("SHOW_ADVANCED_MNEMONIC").charAt(0));
-        showAll.setMnemonic(bundle.getMessage("SHOW_ALL_MNEMONIC").charAt(0));
     }
 
     protected PropertyBindingPanel bindingPanel;
@@ -284,8 +285,7 @@ public class BindingSourcePanel extends JPanel {
                 compCombo_actionPerformed(e);
             }
         });
-        propLabel.setText(bundle.getMessage("selectBindableProp")); //NOI18N
-        propLabel.setDisplayedMnemonic(bundle.getMessage("selectBindablePropDisplayedMnemonic").charAt(0)); //NOI18N
+        Mnemonics.setLocalizedText(propLabel, bundle.getMessage("selectBindableProp"));
         
         propList.setModel(propListModel);
         propList.setCellRenderer(new PropListRenderer());
@@ -295,20 +295,20 @@ public class BindingSourcePanel extends JPanel {
                 propList_valueChanged(e);
             }
         });
-        showDefault.setText(bundle.getMessage("default")); //NOI18N
+        Mnemonics.setLocalizedText(showDefault, bundle.getMessage("default"));
         showDefault.setSelected(true);
         showDefault.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 show_itemStateChanged(e);
             }
         });
-        showAdvanced.setText(bundle.getMessage("advanced")); //NOI18N
+        Mnemonics.setLocalizedText(showAdvanced, bundle.getMessage("advanced"));
         showAdvanced.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 show_itemStateChanged(e);
             }
         });
-        showAll.setText(bundle.getMessage("all")); //NOI18N
+        Mnemonics.setLocalizedText(showAll, bundle.getMessage("all"));
         showAll.addItemListener(new ItemListener() {
             public void itemStateChanged(ItemEvent e) {
                 show_itemStateChanged(e);

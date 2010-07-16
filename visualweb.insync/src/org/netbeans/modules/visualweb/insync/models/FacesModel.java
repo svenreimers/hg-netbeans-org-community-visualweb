@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -69,6 +72,8 @@ import org.openide.loaders.DataObject;
 import org.openide.loaders.DataObjectNotFoundException;
 import org.openide.loaders.OperationEvent;
 import org.openide.loaders.OperationListener;
+import org.openide.text.Line.ShowOpenType;
+import org.openide.text.Line.ShowVisibilityType;
 import org.openide.util.Lookup;
 import org.openide.util.NbBundle;
 import org.netbeans.modules.visualweb.extension.openide.util.Trace;
@@ -275,6 +280,7 @@ public class FacesModel extends Model {
     /**
      * A Model.Factory that knows how and when to make faces page FacesModels from file objects.
      */
+    @org.openide.util.lookup.ServiceProvider(service=org.netbeans.modules.visualweb.insync.Model.Factory.class, position=10)
     public static class FacesFactory implements Model.Factory {
 //        static final String[] mimes = DesignerService.getDefault().getMimeTypes();
         static final String[] mimes = InSyncServiceProvider.get().getMimeTypes();
@@ -324,6 +330,7 @@ public class FacesModel extends Model {
     /**
      * A Model.Factory that knows how and when to make simple bean FacesModels from file objects.
      */
+    @org.openide.util.lookup.ServiceProvider(service=org.netbeans.modules.visualweb.insync.Model.Factory.class, position=20)
     public static class BeansFactory implements Model.Factory {
         static final String[] mimes = { "text/x-java" };
 
@@ -1427,7 +1434,7 @@ public class FacesModel extends Model {
                 Line.Set ls = lc.getLineSet();
                 if (ls != null) {
                     Line line = ls.getCurrent(lineNo);
-                    line.show(Line.SHOW_GOTO, col);
+                    line.show(ShowOpenType.OPEN, ShowVisibilityType.FOCUS, col);
                 }
             }
 

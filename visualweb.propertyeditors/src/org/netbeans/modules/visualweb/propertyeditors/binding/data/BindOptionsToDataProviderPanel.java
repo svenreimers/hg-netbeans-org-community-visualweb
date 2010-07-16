@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -85,6 +88,7 @@ import org.netbeans.modules.visualweb.propertyeditors.binding.BindingTargetCallb
 import org.netbeans.modules.visualweb.propertyeditors.binding.PropertyBindingHelper;
 import org.netbeans.modules.visualweb.propertyeditors.util.Bundle;
 import org.openide.ErrorManager;
+import org.openide.awt.Mnemonics;
 
 // Modified to support Add Data Provider from this panel- Winston
 // Lots of duplication between BindOptionsToDataProviderPanel & BindValueToDataProviderPanel
@@ -205,7 +209,7 @@ public class BindOptionsToDataProviderPanel extends DataBindingPanel implements 
     }
     
     protected void updateDataProvider(DesignProperty prop){
-        dpLabel.setText(bundle.getMessage("chooseDpToBind", prop.getDesignBean().getInstanceName())); //NOI18N
+        Mnemonics.setLocalizedText(dpLabel, bundle.getMessage("chooseDpToBind", prop.getDesignBean().getInstanceName()));
         
         if (prop != null) {
             //contexts = prop.getDesignBean().getDesignContext().getProject().getDesignContexts();
@@ -442,15 +446,12 @@ public class BindOptionsToDataProviderPanel extends DataBindingPanel implements 
         noneText.setBorder(UIManager.getBorder("TextField.border")); //NOI18N
         noneText.setText(bundle.getMessage("noDps")); //NOI18N
         
-        valueListLabel.setText(bundle.getMessage("valField")); //NOI18N
-        valueListLabel.setDisplayedMnemonic(bundle.getMessage("valFieldDisplayedMnemonic").charAt(0)); //NOI18N
+        Mnemonics.setLocalizedText(valueListLabel, bundle.getMessage("valField"));
         valueListLabel.setLabelFor(valueList);        
-        displayListLabel.setText(bundle.getMessage("displayField")); //NOI18N        
-        displayListLabel.setDisplayedMnemonic(bundle.getMessage("displayFieldDisplayedMnemonic").charAt(0)); //NOI18N        
+        Mnemonics.setLocalizedText(displayListLabel, bundle.getMessage("displayField"));
         displayListLabel.setLabelFor(displayList);
         valueListScroll.setPreferredSize(new Dimension(200, 200));
         
-        dpLabel.setDisplayedMnemonic(bundle.getMessage("chooseDpToBindSimpleDisplayedMnemonic").charAt(0)); //NOI18N
         dpLabel.setLabelFor(dpCombo);
         
         dpCombo.getAccessibleContext().setAccessibleName(bundle.getMessage("DP_COMBO_ACCESS_NAME"));

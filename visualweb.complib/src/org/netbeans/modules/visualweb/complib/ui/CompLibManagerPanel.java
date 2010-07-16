@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -76,6 +79,7 @@ import org.netbeans.modules.visualweb.complib.Complib;
 import org.netbeans.modules.visualweb.complib.ComplibServiceProvider;
 import org.netbeans.modules.visualweb.complib.ExtensionComplib;
 import org.netbeans.modules.visualweb.complib.IdeUtil;
+import org.openide.awt.Mnemonics;
 
 /**
  *
@@ -475,38 +479,31 @@ public class CompLibManagerPanel extends javax.swing.JPanel {
 
             String labelKey;
             String descriptionKey;
-            String mnemonicKey;
             if (userObject == DESIGN_TIME_UO) {
                 labelKey = "manager.DesignTimeLabel";
                 descriptionKey = "manager.DesignTimeDescription";
-                mnemonicKey = "manager.DesignTimeMnemonic";
                 setDetailPanel(new PathDetailPanel(compLib.getDesignTimePath(),
-                        labelKey, descriptionKey, mnemonicKey));
+                        labelKey, descriptionKey));
             } else if (userObject == RUNTIME_UO) {
                 labelKey = "manager.RuntimeLabel";
                 descriptionKey = "manager.RuntimeDescription";
-                mnemonicKey = "manager.RuntimeMnemonic";
                 setDetailPanel(new PathDetailPanel(compLib.getRuntimePath(),
-                        labelKey, descriptionKey, mnemonicKey));
+                        labelKey, descriptionKey));
             } else if (userObject == JAVADOC_UO) {
                 labelKey = "manager.JavadocLabel";
                 descriptionKey = "manager.JavadocDescription";
-                mnemonicKey = "manager.JavadocMnemonic";
                 setDetailPanel(new PathDetailPanel(compLib.getJavadocPath(),
-                        labelKey, descriptionKey, mnemonicKey));
+                        labelKey, descriptionKey));
             } else if (userObject == SOURCE_UO) {
                 labelKey = "manager.SourceLabel";
                 descriptionKey = "manager.SourceDescription";
-                mnemonicKey = "manager.SourceMnemonic";
                 setDetailPanel(new PathDetailPanel(compLib.getSourcePath(),
-                        labelKey, descriptionKey, mnemonicKey));
+                        labelKey, descriptionKey));
             } else if (userObject == WEB_RESOURCES_UO) {
                 labelKey = "manager.WebResourceLabel";
                 descriptionKey = "manager.WebResourceDescription";
-                mnemonicKey = "manager.WebResourceMnemonic";
                 setDetailPanel(new PathDetailPanel(
-                        compLib.getWebResourcePath(), labelKey, descriptionKey,
-                        mnemonicKey));
+                        compLib.getWebResourcePath(), labelKey, descriptionKey));
             } else if (userObject == HELP_UO) {
                 setDetailPanel(new HelpSourcesDetailPanel(compLib));
             }
@@ -585,12 +582,9 @@ public class CompLibManagerPanel extends javax.swing.JPanel {
         HelpCtx helpCtx = new HelpCtx(
                 "projrave_ui_elements_dialogs_component_library_manager"); // NOI18N
         JButton closeButton = new JButton();
-        closeButton.setMnemonic(org.openide.util.NbBundle.getMessage(
-                CompLibManagerPanel.class, "manager.closeButtonMnemonic")
-                .charAt(0));
         String msg = org.openide.util.NbBundle.getMessage(
                 CompLibManagerPanel.class, "manager.closeButtonLabel");
-        closeButton.setText(msg);
+        Mnemonics.setLocalizedText(closeButton, msg);
         closeButton.getAccessibleContext().setAccessibleDescription(msg);
 
         Object[] options = new Object[] { closeButton };

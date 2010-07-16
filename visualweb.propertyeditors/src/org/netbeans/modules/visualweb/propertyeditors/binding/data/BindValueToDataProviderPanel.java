@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -85,6 +88,7 @@ import org.netbeans.modules.visualweb.propertyeditors.binding.BindingTargetCallb
 import org.netbeans.modules.visualweb.propertyeditors.binding.PropertyBindingHelper;
 import org.netbeans.modules.visualweb.propertyeditors.util.Bundle;
 import org.openide.ErrorManager;
+import org.openide.awt.Mnemonics;
 
 // Modified to support Add Data Provider from this panel- Winston
 // XXX Lots of duplication between BindOptionsToDataProviderPanel & BindValueToDataProviderPanel
@@ -175,7 +179,6 @@ public class BindValueToDataProviderPanel extends DataBindingPanel implements De
         valueListLabel.setLabelFor(fieldList);
         fieldList.getAccessibleContext().setAccessibleName(bundle.getMessage("FIELD_LIST_ACCESS_NAME"));
         fieldList.getAccessibleContext().setAccessibleDescription(bundle.getMessage("FIELD_LIST_ACCESS_DESC"));
-        addDataProviderButton.setMnemonic(bundle.getMessage("ADD_DP_BUTTON_MNEMONIC").charAt(0));
         designProperty = prop;
         dpCombo.addItem(bundle.getMessage("dpRetrievingMessage"));
         val_none.display = bundle.getMessage("noneBrackets"); //NOI18N
@@ -392,8 +395,7 @@ public class BindValueToDataProviderPanel extends DataBindingPanel implements De
         
         dpLabel.setText(bundle.getMessage("chooseDpToBindSimple")); //NOI18N
         dpLabel.setDisplayedMnemonic(bundle.getMessage("chooseDpToBindSimpleDisplayedMnemonic").charAt(0)); //NOI18N
-        valueListLabel.setText(bundle.getMessage("dataField")); //NOI18N
-        valueListLabel.setDisplayedMnemonic(bundle.getMessage("dataFieldDisplayedMnemonic").charAt(0)); //NOI18N
+        Mnemonics.setLocalizedText(valueListLabel, bundle.getMessage("dataField"));
         valueListScroll.setPreferredSize(new Dimension(200, 200));
         
         dpCombo.setRenderer(new DPComboRenderer());
@@ -401,7 +403,7 @@ public class BindValueToDataProviderPanel extends DataBindingPanel implements De
         this.setPreferredSize(new Dimension(400, 200));
         this.setLayout(gridbag);
         
-        addDataProviderButton.setText(bundle.getMessage("ADD_DP_BUTTON_LBL"));
+        Mnemonics.setLocalizedText(addDataProviderButton, bundle.getMessage("ADD_DP_BUTTON_LBL"));
         addDataProviderButton.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent evt) {
                 new AddDataProviderDialog().showDialog();

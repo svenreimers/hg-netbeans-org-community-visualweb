@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -49,6 +52,7 @@ import javax.swing.text.Document;
 
 import org.netbeans.spi.project.ui.support.ProjectChooser;
 import org.openide.WizardDescriptor;
+import org.openide.awt.Mnemonics;
 import org.openide.filesystems.FileUtil;
 import org.openide.util.NbBundle;
 
@@ -159,33 +163,28 @@ public final class SamplesWebVisualPanel extends JPanel implements DocumentListe
         jSeparator1 = new javax.swing.JSeparator();
         setAsMainProject = new javax.swing.JCheckBox();
 
-        projectNameLabel.setDisplayedMnemonic(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectName_LabelMnemonic").charAt(0));
         projectNameLabel.setLabelFor(projectNameField);
-        projectNameLabel.setText(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectName_Label")); // NOI18N
+        Mnemonics.setLocalizedText(projectNameLabel, NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectName_Label"));
 
-        projectLocationLabel.setDisplayedMnemonic(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectLocation_LabelMnemonic").charAt(0));
         projectLocationLabel.setLabelFor(projectLocationField);
-        projectLocationLabel.setText(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectLocation_Label")); // NOI18N
+        Mnemonics.setLocalizedText(projectLocationLabel, NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_ProjectLocation_Label"));
 
-        projectFolderLabel.setDisplayedMnemonic(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_CreatedProjectFolder_LabelMnemonic").charAt(0));
         projectFolderLabel.setLabelFor(projectFolderField);
-        projectFolderLabel.setText(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_CreatedProjectFolder_Label")); // NOI18N
+        Mnemonics.setLocalizedText(projectFolderLabel, NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_CreatedProjectFolder_Label"));
 
         projectFolderField.setEnabled(false);
 
-        browseButton.setMnemonic(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_Browse_LabelMnemonic").charAt(0));
-        browseButton.setText(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_BrowseLocation_Button")); // NOI18N
+        Mnemonics.setLocalizedText(browseButton, NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_BrowseLocation_Button"));
         browseButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 browseButtonActionPerformed(evt);
             }
         });
 
-        setAsMainProject.setMnemonic(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_SetAsMain_CheckBoxMnemonic").charAt(0));
         setAsMainProject.setSelected(true);
-        setAsMainProject.setText(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_SetAsMain_CheckBox")); // NOI18N
         setAsMainProject.setBorder(javax.swing.BorderFactory.createEmptyBorder(0, 0, 0, 0));
         setAsMainProject.setMargin(new java.awt.Insets(0, 0, 0, 0));
+        Mnemonics.setLocalizedText(setAsMainProject, NbBundle.getMessage(SamplesWebVisualPanel.class, "LBL_NWP1_SetAsMain_CheckBox"));
 
         org.jdesktop.layout.GroupLayout layout = new org.jdesktop.layout.GroupLayout(this);
         this.setLayout(layout);
@@ -194,7 +193,7 @@ public final class SamplesWebVisualPanel extends JPanel implements DocumentListe
             .add(layout.createSequentialGroup()
                 .addContainerGap()
                 .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 482, Short.MAX_VALUE)
+                    .add(jSeparator1, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 496, Short.MAX_VALUE)
                     .add(layout.createSequentialGroup()
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
                             .add(projectNameLabel)
@@ -202,11 +201,9 @@ public final class SamplesWebVisualPanel extends JPanel implements DocumentListe
                             .add(projectFolderLabel))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(layout.createParallelGroup(org.jdesktop.layout.GroupLayout.LEADING)
-                            .add(projectNameField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-                            .add(projectFolderField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)
-                            .add(org.jdesktop.layout.GroupLayout.TRAILING, layout.createSequentialGroup()
-                                .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
-                                .add(projectLocationField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 287, Short.MAX_VALUE)))
+                            .add(projectNameField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                            .add(projectFolderField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE)
+                            .add(org.jdesktop.layout.GroupLayout.TRAILING, projectLocationField, org.jdesktop.layout.GroupLayout.DEFAULT_SIZE, 444, Short.MAX_VALUE))
                         .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                         .add(browseButton))
                     .add(setAsMainProject))
@@ -232,7 +229,7 @@ public final class SamplesWebVisualPanel extends JPanel implements DocumentListe
                 .add(jSeparator1, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE, 10, org.jdesktop.layout.GroupLayout.PREFERRED_SIZE)
                 .addPreferredGap(org.jdesktop.layout.LayoutStyle.RELATED)
                 .add(setAsMainProject)
-                .addContainerGap(176, Short.MAX_VALUE))
+                .addContainerGap(184, Short.MAX_VALUE))
         );
 
         projectNameLabel.getAccessibleContext().setAccessibleName(org.openide.util.NbBundle.getMessage(SamplesWebVisualPanel.class, "ACSN_projectNameLabel")); // NOI18N

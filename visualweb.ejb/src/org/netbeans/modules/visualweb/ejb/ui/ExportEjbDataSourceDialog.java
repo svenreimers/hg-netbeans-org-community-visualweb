@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -64,6 +67,7 @@ import javax.swing.JButton;
 import org.openide.DialogDescriptor;
 import org.openide.DialogDisplayer;
 import org.openide.NotifyDescriptor;
+import org.openide.awt.Mnemonics;
 import org.openide.util.HelpCtx;
 import org.openide.util.NbBundle;
 
@@ -102,13 +106,13 @@ public class ExportEjbDataSourceDialog implements ActionListener {
         DialogDescriptor dialogDescriptor = new DialogDescriptor( exportPanel, NbBundle.getMessage(ExportEjbDataSourceDialog.class, "EXPORT_EJB_DATASOURCES"), 
                                                  true, (ActionListener)this );
         
-        okButton = new JButton( NbBundle.getMessage(ImportEjbDataSourcesDialog.class, "OK_BUTTON_LABEL") );
-        
+        okButton = new JButton();
+        Mnemonics.setLocalizedText(okButton, NbBundle.getMessage(ImportEjbDataSourcesDialog.class, "OK_BUTTON_LABEL"));
         okButton.getAccessibleContext().setAccessibleDescription(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("OK_BUTTON_DESC"));
-        okButton.setMnemonic(NbBundle.getMessage(ImportEjbDataSourcesDialog.class, "OK_BUTTON_MNEMONIC").charAt(0));
-        cancelButton = new JButton( NbBundle.getMessage(ExportEjbDataSourceDialog.class, "CANCEL_BUTTON_LABEL") );
+
+        cancelButton = new JButton();
+        Mnemonics.setLocalizedText(cancelButton,  NbBundle.getMessage(ExportEjbDataSourceDialog.class, "CANCEL_BUTTON_LABEL"));
         cancelButton.getAccessibleContext().setAccessibleDescription(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("CANCEL_BUTTON_DESC"));
-        cancelButton.setMnemonic(NbBundle.getMessage(ImportEjbDataSourcesDialog.class, "CANCEL_BUTTON_MNEMONIC").charAt(0));
         dialogDescriptor.setOptions(new Object[] { okButton, cancelButton });
         dialogDescriptor.setClosingOptions(new Object[] {cancelButton});
         
