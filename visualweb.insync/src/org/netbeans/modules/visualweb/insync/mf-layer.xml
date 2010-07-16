@@ -2,7 +2,10 @@
 <!--
 DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
-Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+
+Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+Other names may be trademarks of their respective owners.
 
 
 The contents of this file are subject to the terms of either the GNU
@@ -15,9 +18,9 @@ or nbbuild/licenses/CDDL-GPL-2-CP. See the License for the
 specific language governing permissions and limitations under the
 License.  When distributing the software, include this License Header
 Notice in each file and include the License file at
-nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
 particular file as subject to the "Classpath" exception as provided
-by Sun in the GPL Version 2 section of the License file that
+by Oracle in the GPL Version 2 section of the License file that
 accompanied this code. If applicable, add the following below the
 License Header, with the fields enclosed by brackets [] replaced by
 your own identifying information:
@@ -59,6 +62,9 @@ made subject to such option by the copyright holder.
             <file name="org-netbeans-modules-visualweb-insync-action-ViewPageNavigationAction.instance"/>
             <file name="org-netbeans-modules-visualweb-insync-action-VirtualFormsAction.instance"/>
         </folder>
+        <folder name="Tools">
+            <file name="org-netbeans-modules-visualweb-insync-live-CustomizeAction.instance"/>
+        </folder>
     </folder>
 
     <folder name="Editors">
@@ -72,9 +78,6 @@ made subject to such option by the copyright holder.
         <folder name="application">
             <folder name="x-designtime">
                 <folder name="Actions">
-                    <file name="org-netbeans-modules-visualweb-insync-live-CustomizeAction.instance">
-                        <attr name="position" intvalue="100"/>
-                    </file>
                     <file name="SeparatorCustomizer.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                         <attr name="position" intvalue="200"/>
@@ -115,9 +118,6 @@ made subject to such option by the copyright holder.
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-DesignBeanContextAction.instance"/>
                         <attr name="position" intvalue="1300"/>
                     </file>
-                    <file name="org-openide-actions-NewAction.instance">
-                        <attr name="position" intvalue="1400"/>
-                    </file>
                     <file name="org-netbeans-modules-visualweb-insync-action-PropertyBindingAction.shadow">
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-PropertyBindingAction.instance"/>
                         <attr name="position" intvalue="1500"/>
@@ -138,24 +138,33 @@ made subject to such option by the copyright holder.
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                         <attr name="position" intvalue="2200"/>
                     </file>
-                    <file name="org-openide-actions-CustomizeAction.instance">
-                        <attr name="position" intvalue="2300"/>
-                    </file>
                     <file name="Separator6.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                         <attr name="position" intvalue="2400"/>
                     </file>
-                    <file name="org-openide-actions-CutAction.instance">
-                        <attr name="position" intvalue="2500"/>
+                    <file name="org-netbeans-modules-visualweb-insync-live-CustomizeAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Tools/org-netbeans-modules-visualweb-insync-live-CustomizeAction.instance"/>
+                        <attr name="position" intvalue="100"/>
                     </file>
-                    <file name="org-openide-actions-CopyAction.instance">
+                    <file name="org-openide-actions-CopyAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CopyAction.instance"/>
                         <attr name="position" intvalue="2600"/>
                     </file>
-                    <file name="org-openide-actions-PasteAction.instance">
-                        <attr name="position" intvalue="2700"/>
+                    <file name="org-openide-actions-CustomizeAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/View/org-openide-actions-CustomizeAction.instance"/>
+                        <attr name="position" intvalue="2300"/>
                     </file>
-                    <file name="org-openide-actions-DeleteAction.instance">
+                    <file name="org-openide-actions-CutAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CutAction.instance"/>
+                        <attr name="position" intvalue="2500"/>
+                    </file>
+                    <file name="org-openide-actions-DeleteAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-DeleteAction.instance"/>
                         <attr name="position" intvalue="2800"/>
+                    </file>
+                    <file name="org-openide-actions-NewAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-NewAction.instance"/>
+                        <attr name="position" intvalue="1400"/>
                     </file>
                     <file name="Separator7.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
@@ -172,6 +181,10 @@ made subject to such option by the copyright holder.
                     <file name="org-netbeans-modules-visualweb-insync-action-ViewPageNavigationAction.shadow">
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-ViewPageNavigationAction.instance"/>
                         <attr name="position" intvalue="3500"/>
+                    </file>
+                    <file name="org-openide-actions-PasteAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-PasteAction.instance"/>
+                        <attr name="position" intvalue="2700"/>
                     </file>
                 </folder>
             </folder>
@@ -220,9 +233,6 @@ made subject to such option by the copyright holder.
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-DesignBeanContextAction.instance"/>
                         <attr name="position" intvalue="200"/>
                     </file>
-                    <file name="org-openide-actions-NewAction.instance">
-                        <attr name="position" intvalue="300"/>
-                    </file>
                     <file name="org-netbeans-modules-visualweb-insync-action-PropertyBindingAction.shadow">
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-PropertyBindingAction.instance"/>
                         <attr name="position" intvalue="400"/>
@@ -243,24 +253,29 @@ made subject to such option by the copyright holder.
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                         <attr name="position" intvalue="2200"/>
                     </file>
-                    <file name="org-openide-actions-CustomizeAction.instance">
-                        <attr name="position" intvalue="2300"/>
-                    </file>
                     <file name="Separator6.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
                         <attr name="position" intvalue="2400"/>
                     </file>
-                    <file name="org-openide-actions-CutAction.instance">
-                        <attr name="position" intvalue="2500"/>
-                    </file>
-                    <file name="org-openide-actions-CopyAction.instance">
+                    <file name="org-openide-actions-CopyAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CopyAction.instance"/>
                         <attr name="position" intvalue="2600"/>
                     </file>
-                    <file name="org-openide-actions-PasteAction.instance">
-                        <attr name="position" intvalue="2700"/>
+                    <file name="org-openide-actions-CustomizeAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/View/org-openide-actions-CustomizeAction.instance"/>
+                        <attr name="position" intvalue="2300"/>
                     </file>
-                    <file name="org-openide-actions-DeleteAction.instance">
+                    <file name="org-openide-actions-CutAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-CutAction.instance"/>
+                        <attr name="position" intvalue="2500"/>
+                    </file>
+                    <file name="org-openide-actions-DeleteAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-DeleteAction.instance"/>
                         <attr name="position" intvalue="2800"/>
+                    </file>
+                    <file name="org-openide-actions-NewAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/System/org-openide-actions-NewAction.instance"/>
+                        <attr name="position" intvalue="300"/>
                     </file>
                     <file name="Separator7.instance">
                         <attr name="instanceClass" stringvalue="javax.swing.JSeparator"/>
@@ -277,6 +292,10 @@ made subject to such option by the copyright holder.
                     <file name="org-netbeans-modules-visualweb-insync-action-ViewPageNavigationAction.shadow">
                         <attr name="originalFile" stringvalue="/Actions/Insync/org-netbeans-modules-visualweb-insync-action-ViewPageNavigationAction.instance"/>
                         <attr name="position" intvalue="3500"/>
+                    </file>
+                    <file name="org-openide-actions-PasteAction.shadow">
+                        <attr name="originalFile" stringvalue="Actions/Edit/org-openide-actions-PasteAction.instance"/>
+                        <attr name="position" intvalue="2700"/>
                     </file>
                 </folder>
                 

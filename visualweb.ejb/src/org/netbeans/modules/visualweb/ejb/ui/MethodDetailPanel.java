@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -174,10 +177,8 @@ public class MethodDetailPanel extends javax.swing.JPanel {
 
         setLayout(new java.awt.GridBagLayout());
 
-        returnTypeLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("RETURN_TYPE_LABEL_MNEMONIC").charAt(0));
         returnTypeLabel.setLabelFor(returnTypeTextField);
-        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle"); // NOI18N
-        returnTypeLabel.setText(bundle.getString("RETURN_TYPE")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(returnTypeLabel, org.openide.util.NbBundle.getMessage(MethodDetailPanel.class, "RETURN_TYPE")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 2;
@@ -185,11 +186,11 @@ public class MethodDetailPanel extends javax.swing.JPanel {
         gridBagConstraints.anchor = java.awt.GridBagConstraints.NORTHWEST;
         gridBagConstraints.insets = new java.awt.Insets(12, 0, 0, 0);
         add(returnTypeLabel, gridBagConstraints);
+        java.util.ResourceBundle bundle = java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle"); // NOI18N
         returnTypeLabel.getAccessibleContext().setAccessibleDescription(bundle.getString("RETURN_TYPE_DESC")); // NOI18N
 
-        paramLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("METHOD_PARAMETERS_LABEL_MNEMONIC").charAt(0));
         paramLabel.setLabelFor(paramTable);
-        paramLabel.setText(bundle.getString("PARAMETER")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(paramLabel, org.openide.util.NbBundle.getMessage(MethodDetailPanel.class, "PARAMETER")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 4;
@@ -268,9 +269,8 @@ public class MethodDetailPanel extends javax.swing.JPanel {
         returnTypeTextField.getAccessibleContext().setAccessibleName(bundle.getString("RETURN_TYPE_DESC")); // NOI18N
         returnTypeTextField.getAccessibleContext().setAccessibleDescription(bundle.getString("RETURN_TYPE_DESC")); // NOI18N
 
-        elemClassTypeLabel.setDisplayedMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("ELEMENT_CLASS_LABEL_MNEMONIC").charAt(0));
         elemClassTypeLabel.setLabelFor(classNameTextField);
-        elemClassTypeLabel.setText(bundle.getString("ELEMENT_CLASS_TYPE")); // NOI18N
+        org.openide.awt.Mnemonics.setLocalizedText(elemClassTypeLabel, org.openide.util.NbBundle.getMessage(MethodDetailPanel.class, "ELEMENT_CLASS_TYPE")); // NOI18N
         gridBagConstraints = new java.awt.GridBagConstraints();
         gridBagConstraints.gridx = 0;
         gridBagConstraints.gridy = 3;

@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -41,7 +44,6 @@
 
 package org.netbeans.modules.visualweb.project.jsf.api;
 
-import org.netbeans.modules.visualweb.project.jsf.*;
 
 import java.io.IOException;
 import java.net.URL;
@@ -50,9 +52,7 @@ import java.util.Map;
 import org.netbeans.api.project.Project;
 import org.openide.ErrorManager;
 import org.openide.filesystems.FileObject;
-import org.openide.filesystems.FileSystem;
 import org.openide.filesystems.FileUtil;
-import org.openide.filesystems.Repository;
 import org.openide.loaders.DataFolder;
 import org.openide.loaders.DataObject;
 import org.openide.util.Utilities;
@@ -74,8 +74,7 @@ public abstract class ProjectTemplate {
     public abstract void instantiateFile(Project project, Node node, FileObject folder, String pageName) throws IOException;
 
     protected FileObject instantiateFileTemplate(FileObject folder, String name, String templateName, Map<String, String> parameters) throws IOException {
-        FileSystem fs = Repository.getDefault().getDefaultFileSystem();
-        FileObject FO = fs.findResource(templateName);
+        FileObject FO = FileUtil.getConfigFile(templateName);
         if (FO == null) {
             IOException iox = new IOException("Can't find template FileObject for " + templateName); // NOI18N - internal error
             ErrorManager.getDefault().notify(ErrorManager.ERROR, iox);
@@ -176,11 +175,10 @@ public abstract class ProjectTemplate {
      */
     
     public static void addToTemplateChooser(Project project, String name) throws IOException {
-        FileSystem dfs = Repository.getDefault().getDefaultFileSystem();
-        FileObject templateRootFolder = dfs.findResource(JsfProjectConstants.USER_TEMPLATE_FS_ROOT);
+        FileObject templateRootFolder = FileUtil.getConfigFile(JsfProjectConstants.USER_TEMPLATE_FS_ROOT);
         assert templateRootFolder != null;
         
-        FileObject boilerplate = dfs.findResource(JsfProjectConstants.USER_TEMPLATE_FS_BOILERPLATE);
+        FileObject boilerplate = FileUtil.getConfigFile(JsfProjectConstants.USER_TEMPLATE_FS_BOILERPLATE);
         assert boilerplate != null;
         
         Enumeration attrs = boilerplate.getAttributes();

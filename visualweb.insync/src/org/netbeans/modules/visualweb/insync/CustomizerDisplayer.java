@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -59,6 +62,7 @@ import com.sun.rave.designtime.DesignBean;
 import com.sun.rave.designtime.Customizer2;
 import javax.swing.JDialog;
 import org.netbeans.modules.visualweb.insync.models.FacesModel;
+import org.openide.awt.Mnemonics;
 
 /**
  * Class responsible for handling live customizers. It will display a live customizer, and also
@@ -125,8 +129,8 @@ public class CustomizerDisplayer
         Object[] options = null;
         Object[] closingOptions = null;
         if (customizer.isApplyCapable()) {
-            applyButton = new JButton(NbBundle.getMessage(CustomizerDisplayer.class, "Apply")); // NOI18N
-            applyButton.setMnemonic(NbBundle.getMessage(CustomizerDisplayer.class, "Apply_mnemonic").charAt(0));
+            applyButton = new JButton();
+            Mnemonics.setLocalizedText(applyButton, NbBundle.getMessage(CustomizerDisplayer.class, "TXT_Apply"));
             applyButton.getAccessibleContext().setAccessibleName(NbBundle.getMessage(CustomizerDisplayer.class, "APPLY_ACCESS_NAME"));
             applyButton.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(CustomizerDisplayer.class, "APPLY_ACCESS_DESC"));
             boolean enabled = customizer.isModified(); // in case changes aren't cached
@@ -141,8 +145,8 @@ public class CustomizerDisplayer
                 DialogDescriptor.OK_OPTION,
                 DialogDescriptor.CANCEL_OPTION };
         } else {
-            closeButton = new JButton(NbBundle.getMessage(CustomizerDisplayer.class, "Close")); // NOI18N
-            closeButton.setMnemonic(NbBundle.getMessage(CustomizerDisplayer.class, "Close_mnemonic").charAt(0));
+            closeButton = new JButton();
+            Mnemonics.setLocalizedText(closeButton, NbBundle.getMessage(CustomizerDisplayer.class, "TXT_Close"));
             closeButton.getAccessibleContext().setAccessibleName(NbBundle.getMessage(CustomizerDisplayer.class, "CLOSE_ACCESS_NAME"));
             closeButton.getAccessibleContext().setAccessibleDescription(NbBundle.getMessage(CustomizerDisplayer.class, "CLOSE_ACCESS_DESC"));
             options = new Object[] {

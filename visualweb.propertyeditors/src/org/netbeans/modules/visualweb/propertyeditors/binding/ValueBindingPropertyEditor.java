@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -78,6 +81,7 @@ import com.sun.rave.designtime.faces.FacesDesignContext;
 import com.sun.rave.designtime.faces.FacesDesignProperty;
 import org.netbeans.modules.visualweb.propertyeditors.binding.data.TabbedDataBindingPanel;
 import org.netbeans.modules.visualweb.propertyeditors.util.Bundle;
+import org.openide.awt.Mnemonics;
 
 public class ValueBindingPropertyEditor implements PropertyEditor, ExPropertyEditor, FacesBindingPropertyEditor, BindingTargetCallback,
         com.sun.rave.propertyeditors.binding.ValueBindingPropertyEditor {
@@ -138,8 +142,8 @@ public class ValueBindingPropertyEditor implements PropertyEditor, ExPropertyEdi
             
             useValueUseBindingGroup = new ButtonGroup();
             
-            useBindingButton = new JRadioButton(bundle.getMessage("LBL_UseBindingRadionButton")); // NOI18N
-            useBindingButton.setMnemonic(bundle.getMessage("LBL_UseBindingRadionButton_Mnemonic").charAt(0)); // NOI18N
+            useBindingButton = new JRadioButton(); // NOI18N
+            Mnemonics.setLocalizedText(useBindingButton, bundle.getMessage("LBL_UseBindingRadionButton"));
             useBindingButton.getAccessibleContext().setAccessibleName(bundle.getMessage("LBL_UseBindingRadionButton")); // NOI18N
             useBindingButton.getAccessibleContext().setAccessibleDescription(bundle.getMessage("LBL_UseBindingRadionButton_A11YDescription")); // NOI18N
             useValueUseBindingGroup.add(useBindingButton);
@@ -151,8 +155,8 @@ public class ValueBindingPropertyEditor implements PropertyEditor, ExPropertyEdi
             gridBagConstraints.gridy = 0;
             add(useBindingButton, gridBagConstraints);
             
-            useValueButton = new JRadioButton(bundle.getMessage("LBL_UseValueRadionButton")); // NOI18N
-            useValueButton.setMnemonic(bundle.getMessage("LBL_UseValueRadionButton_Mnemonic").charAt(0)); // NOI18N
+            useValueButton = new JRadioButton(); // NOI18N
+            Mnemonics.setLocalizedText(useValueButton, bundle.getMessage("LBL_UseValueRadionButton"));
             useValueButton.getAccessibleContext().setAccessibleName(bundle.getMessage("LBL_UseValueRadionButton")); // NOI18N
             useValueButton.getAccessibleContext().setAccessibleDescription(bundle.getMessage("LBL_UseValueRadionButton_A11YDescription")); // NOI18N
             useValueUseBindingGroup.add(useValueButton);

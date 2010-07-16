@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -51,7 +54,6 @@ import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileSystem;
 import org.openide.filesystems.FileUtil;
-import org.openide.filesystems.Repository;
 
 /**
  *
@@ -101,12 +103,11 @@ public class JSFUtils {
                 || !collectionsJar.exists() || !beanutilsJar.exists())
             return false;
         
-        final FileSystem sysFs = Repository.getDefault().getDefaultFileSystem();
-        final FileObject libsFolder = sysFs.findResource(LIBS_FOLDER);
+        final FileObject libsFolder = FileUtil.getConfigFile(LIBS_FOLDER);
         final String convertedVersion = convertLibraryVersion(version);
         assert libsFolder != null && libsFolder.isFolder();
         
-        sysFs.runAtomicAction(new FileSystem.AtomicAction() {
+        FileUtil.runAtomicAction(new FileSystem.AtomicAction() {
             public void run() throws IOException {
                 String fileName = LIB_JSF_NAME + "-" + convertedVersion; //NOI18N
                 FileObject jsf = libsFolder.getFileObject(fileName + ".xml");

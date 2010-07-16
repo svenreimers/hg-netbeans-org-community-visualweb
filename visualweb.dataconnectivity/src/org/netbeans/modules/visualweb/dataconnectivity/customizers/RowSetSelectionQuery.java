@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -66,9 +69,9 @@ import org.openide.util.Utilities;
  */
 public class RowSetSelectionQuery extends javax.swing.JPanel {
 
-    private static final ImageIcon closedIcon = new ImageIcon( ImageUtilities.loadImage("org/netbeans/modules/visualweb/dataconnectivity/resources/sqlClosed.gif") ) ;
-    private static final ImageIcon openIcon = new ImageIcon( ImageUtilities.loadImage("org/netbeans/modules/visualweb/dataconnectivity/resources/sqlOpened.gif") ) ;
-    private static final ImageIcon emptyIcon = new ImageIcon( ImageUtilities.loadImage("org/openide/resources/actions/empty.gif") ) ;
+    private static final ImageIcon closedIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/visualweb/dataconnectivity/resources/sqlClosed.gif", false) ;
+    private static final ImageIcon openIcon = ImageUtilities.loadImageIcon("org/netbeans/modules/visualweb/dataconnectivity/resources/sqlOpened.gif", false) ;
+    private static final ImageIcon emptyIcon = ImageUtilities.loadImageIcon("org/openide/resources/actions/empty.gif", false) ;
     boolean expanded = false ;
     private static final Color bgColor = (new javax.swing.JLabel() ).getBackground() ;
 

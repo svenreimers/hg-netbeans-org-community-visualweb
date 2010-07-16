@@ -1,7 +1,10 @@
 /*
  * DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
  *
- * Copyright 1997-2007 Sun Microsystems, Inc. All rights reserved.
+ * Copyright 1997-2010 Oracle and/or its affiliates. All rights reserved.
+ *
+ * Oracle and Java are registered trademarks of Oracle and/or its affiliates.
+ * Other names may be trademarks of their respective owners.
  *
  * The contents of this file are subject to the terms of either the GNU
  * General Public License Version 2 only ("GPL") or the Common
@@ -13,9 +16,9 @@
  * specific language governing permissions and limitations under the
  * License.  When distributing the software, include this License Header
  * Notice in each file and include the License file at
- * nbbuild/licenses/CDDL-GPL-2-CP.  Sun designates this
+ * nbbuild/licenses/CDDL-GPL-2-CP.  Oracle designates this
  * particular file as subject to the "Classpath" exception as provided
- * by Sun in the GPL Version 2 section of the License file that
+ * by Oracle in the GPL Version 2 section of the License file that
  * accompanied this code. If applicable, add the following below the
  * License Header, with the fields enclosed by brackets [] replaced by
  * your own identifying information:
@@ -159,9 +162,7 @@ public class EjbDataSourcesSelectionPanel extends JPanel {
 
         buttonPanel.setLayout(new java.awt.GridLayout(1, 0, 5, 0));
 
-        selectAllButton.setMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("SELECT_ALL_BUTTON_MNEMONIC").charAt(0));
-        selectAllButton.setText(bundle.getString("SELECT_ALL_BUTTON_LABEL")); // NOI18N
-        selectAllButton.setPreferredSize(null);
+        org.openide.awt.Mnemonics.setLocalizedText(selectAllButton, org.openide.util.NbBundle.getMessage(EjbDataSourcesSelectionPanel.class, "SELECT_ALL_BUTTON_LABEL")); // NOI18N
         selectAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 selectAllButtonActionPerformed(evt);
@@ -170,9 +171,7 @@ public class EjbDataSourcesSelectionPanel extends JPanel {
         buttonPanel.add(selectAllButton);
         selectAllButton.getAccessibleContext().setAccessibleDescription(bundle.getString("SELECT_ALL_BUTTON_DESC")); // NOI18N
 
-        clearAllButton.setMnemonic(java.util.ResourceBundle.getBundle("org/netbeans/modules/visualweb/ejb/ui/Bundle").getString("CLEAR_BUTTON_MNEMONIC").charAt(0));
-        clearAllButton.setText(bundle.getString("CLEAR_BUTTON_LABEL")); // NOI18N
-        clearAllButton.setPreferredSize(null);
+        org.openide.awt.Mnemonics.setLocalizedText(clearAllButton, org.openide.util.NbBundle.getMessage(EjbDataSourcesSelectionPanel.class, "CLEAR_BUTTON_LABEL")); // NOI18N
         clearAllButton.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
                 clearAllButtonActionPerformed(evt);
