@@ -18,3 +18,13 @@
 ^visualweb.webui/library/gen$
 ^visualweb\.woodstock\.webui\.jsf/test/functional-compile\.mark$
 ^visualweb.xhtml/generated$
+^misc/ravebuild/netbeans$
+^misc/ravebuild/merge_originals$
+^misc/ravebuild/netbeans-src$
+^misc/ravebuild/java$
+^misc/ravebuild/ship-java$
+^misc/ravebuild/rave$
+^misc/ravebuild/RAVE-.*\.zip$
+^misc/ravebuild/testuserdir$
+^misc/ravebuild/raveantext\.jar$
+^misc/ravebuild/user\.build\.properties$
