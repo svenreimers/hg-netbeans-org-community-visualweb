@@ -49,9 +49,13 @@ made subject to such option by the copyright holder.
 <project name="visualweb.libs.rowset" default="netbeans" basedir=".">
     <description>Builds, tests, and runs the project org.netbeans.modules.visualweb.libs.rowset.</description>
     <import file="nbproject/build-impl.xml"/>
-    
-    <!-- Create the javadoc zip file from the rowset src -->
-    <!-- this target below is not currently being used -->
+    <target name="release" depends="projectized-common.release">
+        <mkdir dir="${cluster}/modules/ext"/>
+        <copy file="external/rowset-1.0.1.jar" todir="${cluster}/modules/ext"/>
+        <mkdir dir="${cluster}/docs"/>
+        <copy file="external/rowset-doc.zip" todir="${cluster}/docs"/>
+    </target>
+    <!-- Create the javadoc zip file from the rowset src; XXX rewrite to use build dir, not external which is in sources
     <target name="rowset-doc-zip">
         <unzip src="external/src.zip" dest="external">
             <patternset>
@@ -78,5 +82,5 @@ made subject to such option by the copyright holder.
         <mkdir dir="release/docs"/>
         <zip basedir="external/javadoc" destfile="release/docs/rowset-doc.zip" />
     </target>
-
+    -->
 </project>

@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="netbeans" name="contrib/visualweb.removebindings">
+<project basedir="." default="netbeans" name="visualweb.removebindings">
     <description>Builds, tests, and runs the project org.netbeans.modules.visualweb.removebindings</description>
-    <import file="../nbproject/build-impl.xml"/>
+    <import file="nbproject/build-impl.xml"/>
 </project>

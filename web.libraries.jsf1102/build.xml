@@ -45,4 +45,10 @@ made subject to such option by the copyright holder.
 -->
 <project name="web.libraries.jsf1102" default="netbeans" basedir=".">
     <import file="nbproject/build-impl.xml"/>
+    <target name="release" depends="projectized-common.release">
+        <mkdir dir="${cluster}/modules/ext"/>
+        <unzip src="external/jsf-1.1.02.zip" dest="${cluster}/modules/ext">
+            <mapper type="glob" from="jsf-1.1.02/*" to="jsf-1_1_02/*"/>
+        </unzip>
+    </target>
 </project>

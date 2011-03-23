@@ -46,4 +46,8 @@ made subject to such option by the copyright holder.
 
 <project name="visualweb.webui.jsf.defaulttheme" default="netbeans" basedir=".">
     <import file="nbproject/build-impl.xml"/>
+    <target name="release" depends="projectized-common.release">
+        <mkdir dir="${cluster}/modules/ext"/>
+        <unzip src="external/woodstock-defaulttheme-4.2.zip" dest="${cluster}/modules/ext"/>
+    </target>
 </project>

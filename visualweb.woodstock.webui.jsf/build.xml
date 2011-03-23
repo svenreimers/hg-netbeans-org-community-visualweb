@@ -43,8 +43,19 @@ However, if you add GPL Version 2 code and therefore, elected the GPL
 Version 2 license, then the option applies only if the new code is
 made subject to such option by the copyright holder.
 -->
-
 <project name="visualweb.woodstock.webui.jsf" default="netbeans" basedir=".">
-    <description>Builds, tests, and runs the project org.netbeans.modules.visualweb.woodstock.webui.jsf.</description>
     <import file="nbproject/build-impl.xml"/>
+    <target name="release" depends="projectized-common.release">
+        <mkdir dir="${cluster}/modules/ext/locale"/>
+        <unzip src="external/woodstock-components-4.2.zip" dest="${cluster}/modules/ext">
+            <patternset includes="jsf-extensions-common-0.1.jar,jsf-extensions-dynamic-faces-0.1.jar,json-2.jar,webui-jsf-dt.jar,webui-jsf.jar"/>
+        </unzip>
+        <unzip src="external/woodstock-components-4.2.zip" dest="${cluster}/modules/ext/locale">
+            <patternset includes="webui-jsf-dt_ja.jar,webui-jsf-dt_pt_BR.jar,webui-jsf-dt_zh_CN.jar"/>
+        </unzip>
+        <mkdir dir="${cluster}/docs"/>
+        <unzip src="external/woodstock-components-4.2.zip" dest="${cluster}/docs">
+            <patternset includes="webui-jsf-doc.zip,webui-jsf-src.zip,webui-jsf-tld.zip"/>
+        </unzip>
+    </target>
 </project>
