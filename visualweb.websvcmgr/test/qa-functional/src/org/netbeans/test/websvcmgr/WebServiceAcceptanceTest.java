@@ -44,6 +44,8 @@ DO NOT ALTER OR REMOVE COPYRIGHT NOTICES OR THIS HEADER.
 
 package org.netbeans.test.websvcmgr;
 
+import com.meterware.httpunit.WebConversation;
+import com.meterware.httpunit.WebResponse;
 import org.netbeans.jemmy.operators.*;
 import org.netbeans.junit.NbTestSuite;
 import junit.framework.Test;
@@ -299,7 +301,6 @@ public class WebServiceAcceptanceTest extends RaveTestCase {
     }
 
     private void verifyHTTP(Project prj, String verificationString) {
-        /* XXX httpunit not available anywhere
         try {
             WebConversation conversation = new WebConversation();
             WebResponse response = null;
@@ -311,7 +312,6 @@ public class WebServiceAcceptanceTest extends RaveTestCase {
             e.printStackTrace();
             fail("Excetion in HTTP check : " + e);
         }
-         */
     }
 
     private void projectUndeployAndClose(Project prj) {

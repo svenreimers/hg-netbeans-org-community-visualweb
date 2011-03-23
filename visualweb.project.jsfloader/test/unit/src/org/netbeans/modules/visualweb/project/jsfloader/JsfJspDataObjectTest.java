@@ -53,7 +53,6 @@ import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
 import org.openide.loaders.DataObject;
 import org.openide.util.Lookup;
-import org.openide.util.test.MockLookup;
 
 /**
  *
@@ -83,8 +82,6 @@ public class JsfJspDataObjectTest extends NbTestCase {
         super.tearDown();
         project = null;
         projectRoot = null;
-        
-        MockLookup.setInstances();
     }
 
     public void testFindPrimaryFile() throws Exception {

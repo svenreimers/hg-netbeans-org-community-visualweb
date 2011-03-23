@@ -55,6 +55,7 @@ import javax.swing.event.ChangeEvent;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.ui.OpenProjects;
+import org.netbeans.junit.MockServices;
 import org.openide.filesystems.FileLock;
 import org.openide.filesystems.FileObject;
 import org.openide.filesystems.FileUtil;
@@ -63,12 +64,6 @@ import org.openide.loaders.DataLoaderPool;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.loaders.DataLoader;
-import org.openide.loaders.DataLoaderPool;
-import org.openide.util.Lookup;
-import org.openide.util.LookupEvent;
-import org.openide.util.LookupListener;
-import org.openide.util.test.MockLookup;
 
 /**
  *
@@ -100,9 +95,7 @@ public class SetupProject {
             throw new IOException("FileObject for project directory not valid");
         }
         
-        MockLookup.init();
-        DataLoaderPool pool = new SetupProject.DefaultPool();
-        MockLookup.setInstances(pool);
+        MockServices.setServices(SetupProject.DefaultPool.class);
         FileObject testApp = destFileObj.getFileObject("VWJavaEE5");
         System.out.println("Children of VWJavaEE5:" + Arrays.toString(testApp.getChildren()));
                 
