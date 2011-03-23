@@ -48,7 +48,7 @@ made subject to such option by the copyright holder.
 
     <description>Builds, tests, and runs the project org.netbeans.modules.visualweb.libs.batik.</description>
 
-    <import file="../nbbuild/templates/projectized.xml"/>
+    <import file="nbproject/build-impl.xml"/>
     
     <target name="init" depends="projectized.init,library-init"/>
     

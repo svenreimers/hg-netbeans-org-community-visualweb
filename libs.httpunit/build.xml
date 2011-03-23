@@ -18,6 +18,6 @@
  Microsystems, Inc. All Rights Reserved.
 -->
 <project name="libs.httpunit" default="netbeans" basedir=".">
-    <import file="../nbbuild/templates/projectized.xml"/>
+    <import file="nbproject/build-impl.xml"/>
 
 </project>

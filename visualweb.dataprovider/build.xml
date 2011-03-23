@@ -47,7 +47,7 @@ made subject to such option by the copyright holder.
 <project name="visualweb.dataprovider" default="netbeans" basedir=".">
 
     <description>Builds and tests the project org.netbeans.modules.visualweb.dataprovider.</description>
-    <import file="../nbbuild/templates/projectized.xml"/>
+    <import file="nbproject/build-impl.xml"/>
     
     <target name="init" depends="projectized.init,library-init,javadoc-zip-init,src-zip-init"/>
     
