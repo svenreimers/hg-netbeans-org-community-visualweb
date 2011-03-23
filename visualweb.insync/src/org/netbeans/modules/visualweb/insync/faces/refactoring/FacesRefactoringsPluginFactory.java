@@ -44,11 +44,9 @@
 
 package org.netbeans.modules.visualweb.insync.faces.refactoring;
 
-import java.util.Arrays;
 
 import org.netbeans.api.fileinfo.NonRecursiveFolder;
 import org.netbeans.api.java.source.TreePathHandle;
-import org.netbeans.api.java.source.TreeUtilities;
 import org.netbeans.modules.refactoring.api.AbstractRefactoring;
 import org.netbeans.modules.refactoring.api.MoveRefactoring;
 import org.netbeans.modules.refactoring.api.RenameRefactoring;
@@ -58,7 +56,6 @@ import org.netbeans.modules.visualweb.insync.models.FacesModelSet;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Lookup;
 
-import com.sun.source.tree.Tree;
 
 /**
  * <p>This is a factory for refactoring plugins that participate in Insync supported refactoring.</p>
@@ -145,7 +142,7 @@ public class FacesRefactoringsPluginFactory implements RefactoringPluginFactory 
             		FacesModelSet.getInstance(refactoredFileObject);
 	            	if (FacesRefactoringUtils.isJavaFileObjectOfInterest(refactoredFileObject)) {
 		                TreePathHandle treePathHandle = refactoringSource.lookup(TreePathHandle.class);
-		                if (treePathHandle == null || TreeUtilities.CLASS_TREE_KINDS.contains(treePathHandle.getKind())) {
+		                if (treePathHandle == null || /*java.source 0.67: TreeUtilities.CLASS_TREE_KINDS.contains(treePathHandle.getKind())*/treePathHandle.getKind().name().matches("ANNOTATION_TYPE|CLASS|ENUM|INTERFACE")) {
 		                    if (refactoring instanceof RenameRefactoring) {
 		                        return new FacesJavaFileRenameRefactoringPlugin((RenameRefactoring)refactoring);
 		                    } else if (refactoring instanceof MoveRefactoring) {

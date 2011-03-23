@@ -1,5 +1,7 @@
 (^|/)build$
+(^|/)dist$
 (^|/)nbproject/private$
+^[^/]+/external/[^/]+\.(zip|jar|gz|bz2|gem|dll|xpi)$
 ^visualweb.complib/\.classpath$
 ^visualweb.complib/\.project$
 ^visualweb.dataconnectivity/doc$
