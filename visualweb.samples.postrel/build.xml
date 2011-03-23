@@ -42,7 +42,7 @@ made subject to such option by the copyright holder.
 -->
 <project basedir="." default="netbeans" name="contrib/visualweb.samples.postrel">
     <description>Builds, tests, and runs the project org.netbeans.modules.visualweb.samples.postrel</description>
-    <import file="../../nbbuild/templates/projectized.xml"/>
+    <import file="../nbproject/build-impl.xml"/>
 
     <target name="jar" depends="gather-samples,projectized-common.jar"/>
     

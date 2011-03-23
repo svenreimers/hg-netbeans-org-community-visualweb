@@ -47,7 +47,7 @@ made subject to such option by the copyright holder.
 <project name="visualweb.webui.designtime" default="netbeans" basedir=".">
     
     <description>Builds and tests the project org.netbeans.modules.visualweb.webui.designtime.</description>
-    <import file="../nbbuild/templates/projectized.xml"/>
+    <import file="nbproject/build-impl.xml"/>
  
     <target name="jar" depends="init,compile,pre-jar,projectized-common.jar"/>
     

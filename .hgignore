@@ -1,3 +1,5 @@
+(^|/)build$
+(^|/)nbproject/private$
 ^visualweb.complib/\.classpath$
 ^visualweb.complib/\.project$
 ^visualweb.dataconnectivity/doc$
