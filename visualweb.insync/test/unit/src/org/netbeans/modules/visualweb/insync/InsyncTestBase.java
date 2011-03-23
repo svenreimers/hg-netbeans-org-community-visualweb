@@ -40,10 +40,9 @@ import java.net.URLStreamHandlerFactory;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
-import junit.framework.*;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.libraries.LibraryManager;
-import org.netbeans.core.startup.layers.NbinstURLStreamHandlerFactory;
+import org.netbeans.junit.MockServices;
 import org.netbeans.junit.NbTestCase;
 import org.netbeans.modules.visualweb.insync.beans.Bean;
 import org.netbeans.modules.visualweb.insync.beans.BeansUnit;
@@ -52,7 +51,7 @@ import org.netbeans.modules.visualweb.insync.models.FacesModelSet;
 import org.netbeans.modules.web.project.WebProject;
 import org.openide.filesystems.FileObject;
 import org.openide.util.Exceptions;
-import org.openide.util.test.MockLookup;
+import org.openide.util.Lookup;
 
 /**
  *
@@ -283,12 +282,7 @@ public class InsyncTestBase extends NbTestCase {
     }
     
     private static void setupServices() {
-        URLStreamHandlerFactory urlStreamHandlerFactory = new NbinstURLStreamHandlerFactory();
-        URL.setURLStreamHandlerFactory(urlStreamHandlerFactory);        
-        MockLookup.setInstances(
-            new RepositoryImpl(),
-            new InsyncMimeResolver(),
-            urlStreamHandlerFactory
-        );
+        URL.setURLStreamHandlerFactory(Lookup.getDefault().lookup(URLStreamHandlerFactory.class));
+        MockServices.setServices(RepositoryImpl.class, InsyncMimeResolver.class);
     }    
 }
