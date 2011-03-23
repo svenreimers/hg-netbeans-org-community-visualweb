@@ -2,6 +2,7 @@
 (^|/)dist$
 (^|/)nbproject/private$
 ^[^/]+/external/[^/]+\.(zip|jar|gz|bz2|gem|dll|xpi)$
+\.orig$
 ^visualweb.complib/\.classpath$
 ^visualweb.complib/\.project$
 ^visualweb.dataconnectivity/doc$
