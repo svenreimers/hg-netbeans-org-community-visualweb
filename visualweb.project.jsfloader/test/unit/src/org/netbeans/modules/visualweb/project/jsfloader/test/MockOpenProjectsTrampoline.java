@@ -114,4 +114,8 @@ public class MockOpenProjectsTrampoline implements OpenProjectsTrampoline {
     public Future<Project[]> openProjectsAPI() {
         return null;
     }
+    @Override
+    public void openAPI(Project[] prjcts, boolean bln, boolean bln1) {
+        throw new UnsupportedOperationException("Not supported yet.");
+    }
 }

@@ -55,6 +55,7 @@ import javax.swing.event.ChangeEvent;
 import org.netbeans.api.project.Project;
 import org.netbeans.api.project.ProjectManager;
 import org.netbeans.api.project.ui.OpenProjects;
+import org.netbeans.junit.MockServices;
 import org.netbeans.modules.visualweb.project.jsfloader.JsfJavaDataLoader;
 import org.netbeans.modules.visualweb.project.jsfloader.JsfJspDataLoader;
 import org.openide.filesystems.FileLock;
@@ -65,34 +66,18 @@ import org.openide.loaders.DataLoaderPool;
 import org.openide.util.Lookup;
 import org.openide.util.LookupEvent;
 import org.openide.util.LookupListener;
-import org.openide.util.test.MockLookup;
 
 /**
  *
  * @author quynguyen
  */
 public class SetupUtils {
-    private static JsfJspDataLoader jspLoader = null;
-    private static JsfJavaDataLoader javaLoader = null;
-    
     public static Project setup(File workDir) throws IOException {
         File userDir = new File(workDir, "userdir");
         userDir.mkdir();
         System.getProperties().put("netbeans.user", userDir.getAbsolutePath());
-        
-        MockLookup.init();
-        DataLoaderPool pool = new SetupUtils.DefaultPool();
-        MockLookup.setInstances(pool);
-        
-        if (jspLoader == null) {
-            jspLoader = new JsfJspDataLoader();
-        }
-        
-        if (javaLoader == null) {
-            javaLoader = new JsfJavaDataLoader();
-        }
-        
-        MockLookup.setInstances(pool, jspLoader, javaLoader);
+
+        MockServices.setServices(SetupUtils.DefaultPool.class, JsfJspDataLoader.class, JsfJavaDataLoader.class);
         
         String zipResource = "VWJavaEE5.zip";
         String zipPath = SetupUtils.class.getResource(zipResource).getPath();
@@ -123,11 +108,11 @@ public class SetupUtils {
     }
 
     public static JsfJavaDataLoader getJavaLoader() {
-        return javaLoader;
+        return JsfJavaDataLoader.findObject(JsfJavaDataLoader.class, true);
     }
 
     public static JsfJspDataLoader getJspLoader() {
-        return jspLoader;
+        return JsfJspDataLoader.findObject(JsfJspDataLoader.class, true);
     }
     
     private static void unZipFile(File archiveFile, FileObject destDir) throws IOException {

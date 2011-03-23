@@ -53,7 +53,6 @@ import org.netbeans.jellytools.actions.SaveAllAction;
 import org.netbeans.jellytools.nodes.Node;
 import org.netbeans.jellytools.modules.j2ee.nodes.J2eeServerNode;
 import org.netbeans.junit.NbTestSuite;
-import org.netbeans.junit.ide.ProjectSupport;
 import org.netbeans.modules.visualweb.gravy.Action;
 import org.netbeans.modules.visualweb.gravy.EditorOperator;
 import org.netbeans.modules.visualweb.gravy.TestUtils;
@@ -102,7 +101,7 @@ public class CompositeComponentsTest extends JellyTestCase {
         ComponentUtils.createProject(projectName);
         // wait for project creation
         TestUtils.wait(10000);
-        ProjectSupport.waitScanFinished();
+//        ProjectSupport.waitScanFinished();
         projectDeployed = false;
         // Workaround for issue
         switchToJSPSource();
