@@ -40,6 +40,8 @@
  * Portions Copyrighted 2007 Sun Microsystems, Inc.
  */
 
+package org.netbeans.modules.visualweb.web.ui.dt.component.customizers;
+
 import org.netbeans.junit.NbTestCase;
 import org.netbeans.junit.NbTestSuite;
 
